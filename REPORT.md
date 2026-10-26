@@ -3,10 +3,9 @@
 **Course:** FTEC5660 Agentic AI for Business and FinTech
 **Name:** Qi Zheng  **Student ID:** 1155268235
 **Repository reproduced:** `WujiangXu/A-mem` @ `b31a1dd` (2026-10-21)
-**Scope and status.** Every number below is measured, not quoted, from **two real trials**
-(`conv-26`, 199 questions, `deepseek-chat`, seeds 42/43). A planned third trial did not complete:
-the API account ran out of credit mid-run (§3.3). With n=2 the standard deviations in §4 are
-themselves weakly estimated and should be read as a spread, not a confidence interval.
+**Scope and status.** Every number below is measured, not quoted, from **three real trials**
+(`conv-26`, 199 questions, `deepseek-chat`, seeds 42/43/44). With n=3 the standard deviations in
+§4 are indicative rather than precise, and should be read as a spread, not a confidence interval.
 
 ---
 
@@ -96,20 +95,25 @@ against the paper.
 Instrumented with `meter.py`, which patches the OpenAI SDK's `Completions.create` and reads
 `response.usage`; the repository is untouched.
 
-| Item | Trial 1 (seed 42) | Trial 2 (seed 43) |
-|---|---|---|
-| LLM calls | **1,723** (memory + QA) | **398** (QA only, memories reused) |
-| Failed calls | 0 | 0 |
-| Input tokens | 3,843,050 | 2,596,009 |
-| Output tokens | 135,040 | 4,107 |
-| Average per call | 2,230 in / 78 out | 6,523 in / 10 out |
-| Cost | **$1.13** | **$0.73** |
-| Wall-clock | 44 min | 14 min |
+| Item | Trial 1 (seed 42) | Trial 2 (seed 43) | Trial 3 (seed 44) |
+|---|---|---|---|
+| LLM calls | **1,723** (memory + QA) | **398** (QA only, memories reused) | **398** (QA only, memories reused) |
+| Failed calls | 0 | 0 | 0 |
+| Input tokens | 3,843,050 | 2,596,009 | 2,599,264 |
+| Output tokens | 135,040 | 4,107 | 4,182 |
+| Average per call | 2,230 in / 78 out | 6,523 in / 10 out | 6,531 in / 11 out |
+| Cost | **$1.13** | **$0.73** | **$0.73** |
+| Wall-clock | 44 min | 14 min | 13 min 46 s |
 
-**Total spent: $1.89** across two trials plus an aborted third.
+**Total spent: $2.59** across the three completed trials, plus a few cents on an attempt that
+aborted at question 8/199 before its meter report was written.
+
+Trials 2 and 3 are near-identical in every column (398 calls, ~2.60 M input tokens, 4.1 k output
+tokens, $0.73) — the expected signature of the same 199 questions against the same cached
+memories, differing only in the seed that orders the two category-5 options.
 
 Two things stand out. First, **the memory cache is keyed by `backend + model`, not by seed**, so
-trials 2 and 3 reuse trial 1's memories — that is why trial 2 needed 398 calls instead of 1,723.
+trials 2 and 3 reuse trial 1's memories — that is why they needed 398 calls each instead of 1,723.
 Second, **the per-call token profile flips between phases**: memory building averages 2,230 input
 tokens (the evolution prompt embeds five neighbour memories), while QA averages 6,523 (ten
 retrieved notes) but emits only ~10 output tokens.
@@ -155,8 +159,10 @@ Reported values (GPT-4o-mini backbone, paper Table 1):
 Because the LLM is stochastic even at fixed temperature, the plan is **3 trials** per
 configuration (seeds 42/43/44) reporting mean ± std.
 
-**Status: 2 of 3 trials complete** (seeds 42, 43). Trial 3 aborted at question 8/199 with
-`HTTP 402 Insufficient Balance` — the account ran out of credit. §4 therefore reports n=2.
+**Status: 3 of 3 trials complete** (seeds 42, 43, 44), zero LLM failures in any of them. The third
+trial was first attempted against an exhausted account and aborted at question 8/199 with
+`HTTP 402 Insufficient Balance`; after a top-up the same command ran cleanly in 13 min 46 s. §4
+therefore reports n=3.
 
 A practical note that makes extra trials cheap: the memory cache is keyed by
 `backend + model`, **not by seed**, so trials 2 and 3 reuse the memories built in trial 1 and
@@ -181,51 +187,53 @@ and cost (it patches the OpenAI SDK's `Completions.create`; the repository code 
 
 ## 4. Results: my numbers vs reported
 
-One conversation (`conv-26`, 199 questions), `deepseek-chat`, `retrieve_k=10`, **two trials**
-(seeds 42 and 43). F1 in percent, mean ± std.
+One conversation (`conv-26`, 199 questions), `deepseek-chat`, `retrieve_k=10`, **three trials**
+(seeds 42, 43, 44). F1 in percent, mean ± std.
 
 The adversarial row is scored with the paper's reference so that it is comparable; the corrected
 score is given underneath. **Under the paper's reference a lower number is better** — see §5.
 
 | Category | n | Reported (GPT-4o-mini) | Mine (paper's reference) | Δ |
 |---|---|---|---|---|
-| Multi-Hop | 32 | 27.02 | **26.98 ± 6.21** | **−0.04** |
-| Temporal | 37 | 45.85 | **20.21 ± 0.96** | **−25.64** |
-| Open-Domain | 13 | 12.14 | **13.52 ± 2.31** | +1.38 |
-| Single-Hop | 70 | 44.65 | **42.58 ± 1.48** | −2.07 |
-| Adversarial | 47 | 50.03 | **33.11 ± 0.19** | −16.92 |
-| Overall | 199 | not reported | 31.78 ± 1.50 | — |
+| Multi-Hop | 32 | 27.02 | **27.04 ± 4.40** | **+0.02** |
+| Temporal | 37 | 45.85 | **21.56 ± 2.44** | **−24.29** |
+| Open-Domain | 13 | 12.14 | **13.88 ± 1.75** | +1.74 |
+| Single-Hop | 70 | 44.65 | **43.08 ± 1.36** | −1.57 |
+| Adversarial | 47 | 50.03 | **31.93 ± 2.05** | −18.10 |
+| Overall | 199 | not reported | 31.96 ± 1.11 | — |
 
-With the corrected category-5 reference: **Adversarial 68.58 ± 1.32**, **Overall 40.15 ± 1.24**.
-Zero LLM failures, zero stale caches in either trial.
+With the corrected category-5 reference: **Adversarial 69.40 ± 1.70**, **Overall 40.81 ± 1.43**.
+Zero LLM failures, zero stale caches in any of the three trials.
 
-**Multi-Hop is an exact match on the mean (−0.04 points) — but read the variance first.** The two
-trials scored 31.37 and 22.58, an 8.79-point swing on the same 32 questions. The near-perfect
-agreement with the paper is therefore partly a coincidence of averaging: the per-trial estimate is
-simply too noisy at n=32 to claim a 0.04-point match. What *can* be said is that Multi-Hop does not
-systematically underperform the paper — the paper's 27.02 sits inside our two-trial range.
+**Multi-Hop is an exact match on the mean (+0.02 points) — but read the variance first.** The
+three trials scored **31.37, 22.58 and 27.17**, an 8.79-point spread on the same 32 questions.
+The third trial landed almost exactly on the paper's number, which is *why* the mean now sits
+0.02 away; that is arithmetic, not evidence. The per-trial estimate is simply too noisy at n=32
+to claim a match of that size. What *can* be said is that Multi-Hop does not systematically
+underperform the paper — the paper's 27.02 sits inside our three-trial range.
 
-**Single-Hop is the most trustworthy comparison.** At n=70 with ±1.48, the −2.07 gap is small and
+**Single-Hop is the most trustworthy comparison.** At n=70 with ±1.36, the −1.57 gap is small and
 tightly bounded. This is the only row where both the sample size and the variance support a firm
-statement: our Single-Hop score is about 2 points below the paper's, consistently.
+statement: our Single-Hop score is about 1.6 points below the paper's, consistently.
 
-**Open-Domain agrees within noise** (+1.38 ± 2.31) but n=13, so this row carries almost no
+**Open-Domain agrees within noise** (+1.74 ± 1.75) but n=13, so this row carries almost no
 information and should not be cited as evidence either way.
 
-**Temporal fails, stably.** ±0.96 across two trials means the −25.64 gap is not sampling noise.
-It is systematic, and §4.1 identifies the mechanism.
+**Temporal fails, stably.** ±2.44 across three trials on a −24.29 gap means this is not sampling
+noise. It is systematic, and §4.1 identifies the mechanism.
 
-**The adversarial row needs care.** 33.11 ± 0.19 vs the paper's 50.03. Because a *lower* score is
-better under this convention, DeepSeek appears to fall for the trap about 17 points less often
+**The adversarial row needs care.** 31.93 ± 2.05 vs the paper's 50.03. Because a *lower* score is
+better under this convention, DeepSeek appears to fall for the trap about 18 points less often
 than the paper's model. That comparison is at least apples-to-apples, but see §5 for why neither
 number should be read as accuracy.
 
 ### 4.1 Why Temporal collapses: a metric artefact, not a reasoning failure
 
-The −25.64 on Temporal is the one large discrepancy, and it has a specific, verifiable cause.
+The −24.29 on Temporal is the one large discrepancy, and it has a specific, verifiable cause.
 
-I inspected all 37 temporal predictions. **Not one scored F1 = 1.0**, and 18 scored exactly 0.
-The failures are not wrong dates — they are the *same* date expressed in a different form:
+Across the three trials, **17 to 19 of the 37 temporal predictions scored exactly 0**, and only
+one of the 111 ever reached 1.0. The failures are not wrong dates — they are the *same* date
+expressed in a different form:
 
 | Question | Gold | DeepSeek's answer |
 |---|---|---|
@@ -239,20 +247,22 @@ and the turn reads *"I went to a LGBTQ support group yesterday"*. So the correct
 7 May 2023 — **DeepSeek's `Yesterday` is semantically right**. It scores zero because `Yesterday`
 and `7 May 2023` share no tokens, and F1 is a token-overlap metric.
 
-Quantified across the category, in both trials independently:
+Quantified across the category, independently in each trial
+(`analyze_temporal.py`, shipped in the repository):
 
-| | seed 42 | seed 43 |
-|---|---|---|
-| Temporal questions | 37 | 37 |
-| Prediction uses a relative time expression **and** gold is absolute | **14** (38%) | **15** (41%) |
-| F1 of that subset | **3.83** | **5.24** |
-| F1 of the remaining questions | **31.27** | **29.29** |
-| Temporal F1 overall | 20.89 | 19.54 |
+| | seed 42 | seed 43 | seed 44 |
+|---|---|---|---|
+| Temporal questions | 37 | 37 | 37 |
+| Prediction uses a relative time expression **and** gold is absolute | **13** (35%) | **14** (38%) | **14** (38%) |
+| F1 of that subset | **4.12** | **5.61** | **7.40** |
+| F1 of the remaining questions | **29.97** | **28.01** | **34.53** |
+| Temporal F1 overall | 20.89 | 19.54 | 24.27 |
 
-The decomposition is stable across trials. If the format-mismatch subset scored like the rest,
-Temporal would be **≈31** rather than ≈20. So roughly **10 of the 25 points** are a surface-form
-artefact, and **≈15 points** remain a genuine capability difference between the two models. Both
-effects are real; conflating them would be wrong in either direction.
+The decomposition is stable across all three trials: the mismatch subset scores 4–7 while the
+rest scores 28–35. If the format-mismatch subset scored like the rest, Temporal would be
+**≈31** (the mean of the "remaining" column) rather than ≈22. So roughly **9 of the 24 points**
+are a surface-form artefact, and **≈15 points** remain a genuine capability difference between
+the two models. Both effects are real; conflating them would be wrong in either direction.
 
 The mechanism is a prompt/model interaction. The category-2 prompt says *"Use DATE of CONVERSATION
 to answer with an approximate date"*. GPT-4o-mini evidently resolves this to an absolute date;
@@ -344,20 +354,20 @@ its repair are both visible in the diff; no inference required.
 ### 5.2 Measured impact on identical predictions
 
 Because the change is pure post-processing, I scored the **same 199 real predictions** twice, for
-both trials. No LLM calls, no sampling noise — the delta is exactly the metric change.
+all three trials. No LLM calls, no sampling noise — the delta is exactly the metric change.
 
 | Category | n | Corrected reference | Paper's reference | Δ |
 |---|---|---|---|---|
-| Multi-Hop | 32 | 26.98 | 26.98 | 0.00 |
-| Temporal | 37 | 20.21 | 20.21 | 0.00 |
-| Open-Domain | 13 | 13.52 | 13.52 | 0.00 |
-| Single-Hop | 70 | 42.58 | 42.58 | 0.00 |
-| **Adversarial** | 47 | **68.58** | **33.11** | **+35.47** |
-| **Overall** | 199 | **40.15** | **31.78** | **+8.37** |
+| Multi-Hop | 32 | 27.04 | 27.04 | 0.00 |
+| Temporal | 37 | 21.56 | 21.56 | 0.00 |
+| Open-Domain | 13 | 13.88 | 13.88 | 0.00 |
+| Single-Hop | 70 | 43.08 | 43.08 | 0.00 |
+| **Adversarial** | 47 | **69.40** | **31.93** | **+37.47** |
+| **Overall** | 199 | **40.81** | **31.96** | **+8.85** |
 
-Per trial, the adversarial shift was **+34.66** (seed 42) and **+36.26** (seed 43); the overall
-shift was +8.19 and +8.56. The effect is stable across trials, which is expected — it is
-arithmetic on the same predictions, not a sampling effect.
+Per trial, the adversarial shift was **+34.66** (seed 42), **+36.26** (seed 43) and **+41.47**
+(seed 44); the overall shift was +8.19, +8.56 and +9.79. The effect is stable across trials,
+which is expected — it is arithmetic on the same predictions, not a sampling effect.
 
 Two things follow.
 
@@ -365,16 +375,17 @@ Two things follow.
 touches category 5. This is a direct check that the change is confined to the intended mechanism.
 
 **The effect is large and purely nominal.** The model's answers did not change by a single
-character, yet for seed 42 the adversarial score moves 34.66 points and the overall score 8.19.
-Any table that mixes the two conventions is not comparable, and the paper's 50.03 cannot be
-placed next to a corrected 68.58 as if the gap were a capability difference.
+character, yet the adversarial score moves 34.66–41.47 points and the overall score 8.19–9.79
+depending on the seed. Any table that mixes the two conventions is not comparable, and the
+paper's 50.03 cannot be placed next to a corrected 69.40 as if the gap were a capability
+difference.
 
 For calibration: with the stub backend (§4.2), which answers `Not mentioned in the conversation`
 to *every* question, the same switch moves the adversarial score by **+97.25** and the overall
 by +22.97. The real model shows a smaller swing (+34.66 / +8.19 for seed 42, +36.26 / +8.56 for
-seed 43) precisely because it does not always decline — the two references partly agree when a
-prediction is a real attempt at the answer. The stub case is the ceiling of the artefact, the real
-case is its realistic size.
+seed 43, +41.47 / +9.79 for seed 44) precisely because it does not always decline — the two
+references partly agree when a prediction is a real attempt at the answer. The stub case is the
+ceiling of the artefact, the real case is its realistic size.
 
 ### 5.3 Which metric should be used
 
@@ -447,13 +458,35 @@ singleton). +24/−1 lines.
 1. 8 sentence pairs × 3 BERTScore values = 24 numbers: **bit-identical** before vs after.
 2. Two full 199-question dry runs, compared question by question: **0 prediction differences,
    0 metric differences (max |Δ| = 0.00e+00)**, all six aggregate F1 values identical.
-3. Speed: **7.83 s → 0.12 s per question (~65×)**; end-to-end dry run **18 min 32 s → 3 min 12 s**.
+3. Speed: **7.83 s → 0.12 s per question (~65×)**; end-to-end dry run **18 min 32 s → 3 min 12&nbsp;s**.
 
 **This is an engineering fix, not the assignment's "one modification".** I report it separately
 so it is not confused with §5, which is the scientific change under evaluation. It is included
 because without it, running 3 trials was not feasible in the available time.
 
-### 6.5 Smaller items
+### 6.5 A run that died silently, and how I caught it
+
+The third trial was launched as `nohup ... &` from a shell that then exited. The log stopped at
+`Processing sample 1/1` and never grew again — **but it also contained no traceback**, so from the
+log alone it looked like a slow run rather than a dead one. `ps` and `pgrep` were both unavailable
+in my environment (`operation not permitted`), so I could not simply check the PID.
+
+What settled it was using the provider as the liveness probe: the account balance is queryable
+over HTTP, and a run of 199 questions must spend money.
+
+```bash
+curl -s https://api.deepseek.com/user/balance -H "Authorization: Bearer $KEY"
+# balance unchanged for five minutes  =>  no calls are being made  =>  the process is gone
+```
+
+The balance had moved by exactly one cent (the two calls issued before the shell exited) and then
+froze. Relaunched under a managed background task, the same command completed in 13 min 46 s.
+
+**Lesson.** "No error in the log" is not evidence that a process is alive. When the process table
+is unreadable, find a side effect that *must* occur per unit of work — here, billing — and watch
+that instead.
+
+### 6.6 Smaller items
 
 - `test_advanced_robust.py` resolves `--dataset` and `--output` relative to the script's own
   directory, not the working directory. Worth knowing when scripting around it.
@@ -464,34 +497,34 @@ because without it, running 3 trials was not feasible in the available time.
 
 ## 7. Conclusions
 
-**What reproduces.** The pipeline runs end to end with zero LLM failures across 2,121 calls
-(1,723 + 398), and the aggregate picture matches the paper closely: Multi-Hop 26.98 vs 27.02,
-Single-Hop 42.58 vs 44.65, Open-Domain 13.52 vs 12.14, overall behaviour within a few points —
-despite a completely different backbone model. A-Mem's central claim, that structured agentic
-memory beats naive retrieval on multi-hop questions, is at minimum **not contradicted**: our
-multi-hop score sits on top of the paper's rather than below it.
+**What reproduces.** The pipeline runs end to end with zero LLM failures across 2,519 calls
+(1,723 + 398 + 398), and the aggregate picture matches the paper closely: Multi-Hop 27.04 vs
+27.02, Single-Hop 43.08 vs 44.65, Open-Domain 13.88 vs 12.14, overall behaviour within a few
+points — despite a completely different backbone model. A-Mem's central claim, that structured
+agentic memory beats naive retrieval on multi-hop questions, is at minimum **not contradicted**:
+our multi-hop score sits on top of the paper's rather than below it.
 
-**But the variance matters as much as the means.** Multi-Hop swung 8.79 points between two runs
-on the same 32 questions. So "we matched the paper to 0.04 points" is arithmetic, not evidence.
-Only Single-Hop (n=70, ±1.48) supports a firm claim, and it says we are about 2 points below.
-With n=2 the standard deviations are themselves barely estimated; a third trial would be worth
-its $0.73.
+**But the variance matters as much as the means.** Multi-Hop swung 8.79 points across three runs
+on the same 32 questions (31.37 / 22.58 / 27.17). So "we matched the paper to 0.02 points" is
+arithmetic, not evidence. Only Single-Hop (n=70, ±1.36) supports a firm claim, and it says we are
+about 1.6 points below. Even at n=3 the standard deviations are themselves weakly estimated; a
+fourth and fifth trial would tighten them for another $0.73 each.
 
 **What does not reproduce, and why.** Two columns need separate explanations, and neither is
 evidence against the method:
 
-1. **Temporal (−25.64, stable at ±0.96)** is mostly a metric artefact. 38–41% of the answers are
+1. **Temporal (−24.29, stable at ±2.44)** is mostly a metric artefact. 35–38% of the answers are
    semantically correct dates expressed relatively (`Yesterday` for `7 May 2023`) and score near
-   zero because F1 is token-overlap. Roughly 10 of the 25 points are this; the remaining ~15 look
+   zero because F1 is token-overlap. Roughly 9 of the 24 points are this; the remaining ~15 look
    like a genuine capability gap between the two models.
 
 2. **Adversarial** is not comparable as reported. The paper scored it against the wrong answer
    (documented by the authors in commit `b31a1dd`), so its 50.03 measures trap-susceptibility,
    not accuracy. On identical predictions, switching to the correct reference moves the column by
-   **+35.47** and the overall score by **+8.37** with no change in model behaviour.
+   **+37.47** and the overall score by **+8.85** with no change in model behaviour.
 
 **What is expensive.** Not the tokens — $1.13 for the first conversation, $0.73 per additional
-trial, $1.89 total spent, ~$11 extrapolated for the full benchmark. The cost is wall-clock time,
+trial, $2.59 total spent, ~$11 extrapolated for the full benchmark. The cost is wall-clock time,
 and most of it was not the agent: a missing `lru_cache` in a third-party library made metric
 computation ~65× slower than it needed to be (§6.4). 44 minutes for the first conversation is
 ~40 minutes of LLM latency plus ~4 minutes of local compute; before the fix the local compute
@@ -507,7 +540,7 @@ alone was 18 minutes.
 3. **Do not average category 5 into an overall score.** Report `adversarial_correct`, and report
    the category separately. Both available references reward a degenerate behaviour (§4.2, §5.3).
 4. **Check answer *form* before believing a capability gap.** The Temporal column would look like
-   a 25-point failure of the method; it is mostly a 10-point formatting mismatch.
+   a 25-point failure of the method; it is mostly a 9-point formatting mismatch.
 5. **Cache the BERTScore model** before running anything at scale (§6.4).
 
 ---
@@ -525,6 +558,7 @@ alone was 18 minutes.
 | `run_trials.sh` | Runs N trials at different seeds and aggregates; memory is built once and reused across seeds |
 | `aggregate_trials.py` | Emits the report-ready mean ± std table against the paper's numbers |
 | `aggregate_legacy.py` | Aggregates the paper-reference rescores across trials |
+| `analyze_temporal.py` | Decomposes the Temporal category into format-mismatch vs. genuine-error subsets (§4.1) |
 | `capture_bert_baseline.py` | Before/after numerical equality check for the BERTScore fix |
 | `bert_baseline_{before,after}.json` | The 24 compared values |
 
