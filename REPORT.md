@@ -90,7 +90,7 @@ underlying LLM differs. I compare against the GPT-4o-mini column as the closest 
 reference and treat any gap as the joint effect of model + environment, not as evidence
 against the paper.
 
-### 2.3 Compute and cost (measured)
+### 2.3 Compute and cost (tokens measured, dollars modelled)
 
 Instrumented with `meter.py`, which patches the OpenAI SDK's `Completions.create` and reads
 `response.usage`; the repository is untouched.
@@ -100,17 +100,24 @@ Instrumented with `meter.py`, which patches the OpenAI SDK's `Completions.create
 | LLM calls | **1,723** (memory + QA) | **398** (QA only, memories reused) | **398** (QA only, memories reused) |
 | Failed calls | 0 | 0 | 0 |
 | Input tokens | 3,843,050 | 2,596,009 | 2,599,264 |
+| … of which cache hits | 165,504 (4%) | 1,018,236 (39%) | 1,345,400 (52%) |
 | Output tokens | 135,040 | 4,107 | 4,182 |
 | Average per call | 2,230 in / 78 out | 6,523 in / 10 out | 6,531 in / 11 out |
-| Cost | **$1.13** | **$0.73** | **$0.73** |
+| Cost (upper bound) | **$1.13** | **$0.73** | **$0.73** |
 | Wall-clock | 44 min | 14 min | 13 min 46 s |
 
-**Total spent: $2.59** across the three completed trials, plus a few cents on an attempt that
-aborted at question 8/199 before its meter report was written.
+**Total: $2.59** across the three completed trials, plus a few cents on an attempt that aborted
+at question 8/199 before its meter report was written.
+
+**Read those dollars as an upper bound, not a bill.** The token counts are exact — they come from
+the API's own `usage` field — but `meter.py` prices *every* input token at list, and 39–52% of
+the input in trials 2 and 3 came from the provider's cache, which is billed at a fraction of
+list. The real charge is lower; I did not model the discount because I could not verify the rate
+for this account tier.
 
 Trials 2 and 3 are near-identical in every column (398 calls, ~2.60 M input tokens, 4.1 k output
-tokens, $0.73) — the expected signature of the same 199 questions against the same cached
-memories, differing only in the seed that orders the two category-5 options.
+tokens, $0.73 modelled) — the expected signature of the same 199 questions against the same
+cached memories, differing only in the seed that orders the two category-5 options.
 
 Two things stand out. First, **the memory cache is keyed by `backend + model`, not by seed**, so
 trials 2 and 3 reuse trial 1's memories — that is why they needed 398 calls each instead of 1,723.
@@ -524,7 +531,8 @@ evidence against the method:
    **+37.47** and the overall score by **+8.85** with no change in model behaviour.
 
 **What is expensive.** Not the tokens — $1.13 for the first conversation, $0.73 per additional
-trial, $2.59 total spent, ~$11 extrapolated for the full benchmark. The cost is wall-clock time,
+trial, $2.59 in total and these are upper bounds because the meter ignores cache discounts
+(§2.3), ~$11 extrapolated for the full benchmark. The cost is wall-clock time,
 and most of it was not the agent: a missing `lru_cache` in a third-party library made metric
 computation ~65× slower than it needed to be (§6.4). 44 minutes for the first conversation is
 ~40 minutes of LLM latency plus ~4 minutes of local compute; before the fix the local compute
