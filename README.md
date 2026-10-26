@@ -1,3 +1,135 @@
+# A-Mem — Reproducibility Study
+
+This repository is a fork of [`WujiangXu/A-mem`](https://github.com/WujiangXu/A-mem) (commit
+`b31a1dd`) prepared for the FTEC5660 *Reproducibility Work* assignment.
+
+**Student:** Qi Zheng · 1155268235
+
+> The upstream A-Mem README is preserved in full at the bottom of this file. Everything above
+> the horizontal rule describes what I changed and how to run it.
+
+---
+
+## What this study does
+
+It reproduces one conversation of the LoCoMo benchmark (`conv-26`, 419 turns, 199 questions)
+from Table 1 of *A-Mem: Agentic Memory for LLM Agents* (NeurIPS 2025), using **DeepSeek** in
+place of the paper's GPT-4o-mini, and measures one small modification to the evaluation.
+
+## Install
+
+```bash
+git clone <this-repo>
+cd <this-repo>
+
+python3 -m venv venv
+source venv/bin/activate
+pip install -r requirements.txt
+```
+
+Two known install snags on a clean machine, and their fixes:
+
+- **`pip install rouge-score` may fail** with `EEXIST: mkdir .../pip-install-*`. Build it from the
+  sdist instead:
+  ```bash
+  curl -sLO https://files.pythonhosted.org/packages/e2/c5/9136736c37022a6ad27fea38f3111eb8f02fe75d067f9a985cc358653102/rouge_score-0.1.2.tar.gz
+  tar xzf rouge_score-0.1.2.tar.gz && pip install --no-build-isolation ./rouge_score-0.1.2
+  ```
+- **NLTK data may not download** in a restricted network. Fetch it manually and make it private,
+  or NLTK will refuse to load it:
+  ```bash
+  for p in tokenizers/punkt tokenizers/punkt_tab corpora/wordnet corpora/omw-1.4; do
+    curl -sLO https://raw.githubusercontent.com/nltk/nltk_data/gh-pages/packages/$p.zip
+    unzip -oq $(basename $p).zip -d ~/nltk_data/$(dirname $p)
+  done
+  chmod -R go-w ~/nltk_data
+  ```
+
+## Configure
+
+```bash
+cp .env.example .env
+# edit .env: DEEPSEEK_API_KEY=sk-...
+```
+
+Switching the model requires **no code change**: the repo's `RobustOpenAIController` builds
+`OpenAI(api_key=...)` without a `base_url`, and the `openai` SDK falls back to the
+`OPENAI_BASE_URL` environment variable.
+
+## Run
+
+```bash
+# one conversation (conv-26), 199 questions, ~$1.13, ~45 min
+./run_eval.sh --ratio 0.1 --seed 42 --output result_seed42.json
+
+# three trials at different seeds; memories are cached and reused, so trials 2-3
+# only re-run QA (~$0.73 and ~14 min each)
+./run_trials.sh 3 0.1
+
+# same predictions, scored under the paper's category-5 reference
+python rescore_c5.py result_seed42.json --json
+python aggregate_legacy.py result_seed42_rescore.json
+```
+
+Sanity checks that cost nothing:
+
+```bash
+python smoke_test.py     # imports, dataset, embeddings, metrics, prompt templates
+python dry_run.py --ratio 0.1   # full pipeline with a stub LLM, no API calls
+```
+
+## What changed
+
+### 1. `utils.py` — reuse the BERTScore model (+24/−1 lines)
+
+`bert_score.score()` calls `bert_score.utils.get_model()`, which has **no `lru_cache`**, so every
+question re-loaded ~1.4 GB of `roberta-large` weights. Metric computation was 6.07 s per
+question — 99.8% of the runtime — i.e. 4.3 hours for the 1,986-question benchmark.
+
+The fix builds one `BERTScorer` and reuses it. Values are unchanged: 24 of 24 compared numbers are
+bit-identical, and two full 199-question runs produced **0 prediction differences and 0 metric
+differences** (max |Δ| = 0.00e+00). Speed: **7.83 s → 0.12 s per question (~65×)**.
+
+This is an engineering fix, not the study's measured modification.
+
+### 2. `tools` — evaluation instrumentation
+
+| File | Purpose |
+|---|---|
+| `meter.py` | Patches `Completions.create` to record token usage; repo untouched |
+| `run_metered.py` | Drop-in entry point that reports tokens and cost |
+| `dry_run.py` | Stub backend for end-to-end validation at zero cost |
+| `smoke_test.py` | Five environment checks |
+| `rescore_c5.py` | Re-scores stored predictions under both category-5 references |
+| `aggregate_trials.py` | mean ± std table against the paper's numbers |
+| `aggregate_legacy.py` | Aggregates the paper-reference rescores across trials |
+| `capture_bert_baseline.py` | Before/after numerical equality check for the BERTScore fix |
+
+## The measured modification
+
+Commit `b31a1dd` (2026-10-21) changed how category-5 (adversarial) questions are scored. Its
+message states the old behaviour plainly:
+
+> `QA.final_answer` returns the adversarial answer for category 5. It is the wrong option offered
+> in the prompt, but both runners also used it as the reference, so **picking the trap scored
+> high**. … `--legacy_c5_reference` restores the previous scoring, **which is what the paper's
+> numbers used**.
+
+So the paper's Adversarial column was scored against the *wrong* answer. On identical
+predictions, switching to the corrected reference moves that column by **+35.47** and the overall
+score by **+8.37**, with no change in model behaviour.
+
+Full results, debug diary and conclusions are in [`REPORT.md`](REPORT.md).
+
+## Secrets
+
+`.env` is git-ignored. No API key is committed anywhere in this repository. Run artifacts
+(`result_*.json`, caches, logs) are git-ignored as well.
+
+---
+
+# Upstream README
+
 # Agentic Memory 🧠
 
 A novel agentic memory system for LLM agents that can dynamically organize memories in an agentic way.
@@ -128,7 +260,7 @@ bash run_k_sweep.sh
 * Category 4: Single-hop
 * Category 5: Adversarial
 
-For more details about the categories, please refer to [this GitHub issue](https://github.com/snap-research/locomo/issues/6). 
+For more details about the categories, please refer to [this GitHub issue](https://github.com/snap-research/locomo/issues/6).
 
 ## Citation 📚
 
@@ -146,5 +278,3 @@ If you use this code in your research, please cite our work:
 ## License 📄
 
 This project is licensed under the MIT License. See LICENSE for details.
-
-
