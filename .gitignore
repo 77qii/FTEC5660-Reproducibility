@@ -1,0 +1,20 @@
+# secrets
+.env
+.env.enterprise
+
+# python
+venv/
+.venv/
+__pycache__/
+*.pyc
+*.egg-info/
+
+# run artifacts
+logs/
+cached_memories_*/
+result_*.json
+*_rescore.json
+bert_baseline_*.json
+smoke.log
+dry_run*.log
+*.log
