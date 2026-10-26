@@ -3,11 +3,10 @@
 **Course:** FTEC5660 Agentic AI for Business and FinTech
 **Name:** Qi Zheng  **Student ID:** 1155268235
 **Repository reproduced:** `WujiangXu/A-mem` @ `b31a1dd` (2026-10-21)
-**Status of this draft:** All seven sections are written and filled with measured numbers from
-**two real trials** (`conv-26`, 199 questions, `deepseek-chat`, seeds 42/43). A planned third
-trial did not run — the API account ran out of credit mid-run (§2.3). With n=2 the standard
-deviations in §4 are very weakly estimated and should be read as a spread, not a confidence
-interval.
+**Scope and status.** Every number below is measured, not quoted, from **two real trials**
+(`conv-26`, 199 questions, `deepseek-chat`, seeds 42/43). A planned third trial did not complete:
+the API account ran out of credit mid-run (§3.3). With n=2 the standard deviations in §4 are
+themselves weakly estimated and should be read as a spread, not a confidence interval.
 
 ---
 
@@ -156,8 +155,8 @@ Reported values (GPT-4o-mini backbone, paper Table 1):
 Because the LLM is stochastic even at fixed temperature, the plan is **3 trials** per
 configuration (seeds 42/43/44) reporting mean ± std.
 
-`[[STATUS: 2 of 3 trials complete (seeds 42, 43). Trial 3 aborted at question 8/199 with
-HTTP 402 Insufficient Balance; the account ran out of credit. §4 reports n=2.]]`
+**Status: 2 of 3 trials complete** (seeds 42, 43). Trial 3 aborted at question 8/199 with
+`HTTP 402 Insufficient Balance` — the account ran out of credit. §4 therefore reports n=2.
 
 A practical note that makes extra trials cheap: the memory cache is keyed by
 `backend + model`, **not by seed**, so trials 2 and 3 reuse the memories built in trial 1 and
@@ -223,7 +222,7 @@ number should be read as accuracy.
 
 ### 4.1 Why Temporal collapses: a metric artefact, not a reasoning failure
 
-The −24.96 on Temporal is the one large discrepancy, and it has a specific, verifiable cause.
+The −25.64 on Temporal is the one large discrepancy, and it has a specific, verifiable cause.
 
 I inspected all 37 temporal predictions. **Not one scored F1 = 1.0**, and 18 scored exactly 0.
 The failures are not wrong dates — they are the *same* date expressed in a different form:
@@ -366,9 +365,9 @@ Two things follow.
 touches category 5. This is a direct check that the change is confined to the intended mechanism.
 
 **The effect is large and purely nominal.** The model's answers did not change by a single
-character, yet the adversarial score moves 34.66 points and the overall score 8.19. Any table
-that mixes the two conventions is not comparable, and the paper's 50.03 cannot be placed next to
-a corrected 67.64 as if the gap were a capability difference.
+character, yet for seed 42 the adversarial score moves 34.66 points and the overall score 8.19.
+Any table that mixes the two conventions is not comparable, and the paper's 50.03 cannot be
+placed next to a corrected 68.58 as if the gap were a capability difference.
 
 For calibration: with the stub backend (§4.2), which answers `Not mentioned in the conversation`
 to *every* question, the same switch moves the adversarial score by **+97.25** and the overall
@@ -381,7 +380,7 @@ case is its realistic size.
 
 Neither reference is fully satisfactory. Under the paper's reference, the metric rewards
 agreeing with a wrong answer. Under the corrected reference, it rewards refusing to answer — a
-constant "not mentioned" scores 100 (§4.1). The repository already computes a third quantity,
+constant "not mentioned" scores 100 (§4.2). The repository already computes a third quantity,
 `adversarial_correct`, which checks whether the prediction declined the trap *and* did not
 echo the adversarial string. I recommend reporting that instead of F1 for category 5, and
 reporting category-5 results separately rather than folding them into an overall average.
