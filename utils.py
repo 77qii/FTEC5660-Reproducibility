@@ -65,10 +65,33 @@ def calculate_bleu_scores(prediction: str, reference: str) -> Dict[str, float]:
     
     return scores
 
+# ---------------------------------------------------------------------------
+# BERTScore 模型复用
+#
+# 原实现调用 bert_score.score()，而 bert_score.utils.get_model() 没有 lru_cache，
+# 于是每道题都会重新 from_pretrained("roberta-large") 加载约 1.4GB 权重：
+# 实测单题 6.07 秒，占 calculate_metrics 总耗时的 99.8%，1986 题要 4.3 小时。
+#
+# 这里改为复用一个 BERTScorer 实例：模型只加载一次，评分参数（lang='en'、
+# batch_size、rescale_with_baseline 等）与 score() 的默认值完全一致，
+# 数值不变，只是不再重复加载。
+# ---------------------------------------------------------------------------
+_BERT_SCORER = None
+
+
+def _get_bert_scorer():
+    """Lazily build one BERTScorer and reuse it for the whole run."""
+    global _BERT_SCORER
+    if _BERT_SCORER is None:
+        from bert_score import BERTScorer
+        _BERT_SCORER = BERTScorer(lang='en')
+    return _BERT_SCORER
+
+
 def calculate_bert_scores(prediction: str, reference: str) -> Dict[str, float]:
     """Calculate BERTScore for semantic similarity."""
     try:
-        P, R, F1 = bert_score([prediction], [reference], lang='en', verbose=False)
+        P, R, F1 = _get_bert_scorer().score([prediction], [reference], verbose=False)
         return {
             'bert_precision': P.item(),
             'bert_recall': R.item(),
