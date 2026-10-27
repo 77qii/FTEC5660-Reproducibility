@@ -1,163 +1,181 @@
 # A-Mem — Reproducibility Study
 
-This repository is a fork of [`WujiangXu/A-mem`](https://github.com/WujiangXu/A-mem) (commit
-`b31a1dd`) prepared for the FTEC5660 *Reproducibility Work* assignment.
+**Qi Zheng · 1155268235 · FTEC5660**
 
-**Student:** Qi Zheng · 1155268235
+**Student GitHub URL: pending provision.** This is the local submission-ready repository;
+no student remote is configured and this revision has not been committed or pushed.
+The authors' repo below is the source, **not** the student's submission link. The assignment
+requires both the student's URL and reviewable commits before submission.
 
-> The upstream A-Mem README is preserved in full at the bottom of this file. Everything above
-> the horizontal rule describes what I changed and how to run it.
+Source: [WujiangXu/A-mem](https://github.com/WujiangXu/A-mem), upstream commit `b31a1dd`.
+The complete upstream README is retained below. Report: [`REPORT.md`](REPORT.md).
 
----
+## Scope and contribution
 
-## What this study does
+One LoCoMo conversation (`conv-26`, 419 turns, 199 questions), DeepSeek requested as
+`deepseek-chat`, three stochastic QA trials sharing **one memory build**, local seeds 42/43/44.
+The seed controls category-5 option order, not API sampling. No matched-condition naive retrieval,
+LoCoMo or MemGPT reruns: paper comparisons are descriptive, not proof of relative improvement.
 
-It reproduces one conversation of the LoCoMo benchmark (`conv-26`, 419 turns, 199 questions)
-from Table 1 of *A-Mem: Agentic Memory for LLM Agents* (NeurIPS 2025), using **DeepSeek** in
-place of the paper's GPT-4o-mini, and measures one small modification to the evaluation.
+**Formal modification:** my `analyze_c5.py` evaluation-quality workflow, not a memory algorithm
+or model-accuracy improvement. The upstream reference fix and refusal predicate are the authors'.
 
-## Install
+| Before: upstream reporting | After: independent added workflow |
+|---|---|
+| stored flags / F1 without an independent audit | consistency assertions against re-derived values |
+| refusal uncertainty not surfaced | question-cluster bootstrap (47 × 3, 20,000 draws, seed 20261026) |
+| no exclusive failure decomposition | failure-mode classification: 43 trap, 2 other, 0 hedged |
+| separate F1 / refusal fields | dual-reference cross-tab; 139/141 disagreement at F1 ≥ 0.5 |
+
+The refusal rate is **68.09 ± 2.13%** across fixed-memory QA trials: 96/141 observations;
+exploratory 95% question-cluster interval **[56.7, 79.4]**. Naive pooled Wilson [60.0, 75.2]
+ignores repeated-question dependence and is not the preferred combined interval. Neither interval
+represents full-benchmark generalisation, memory-rebuild variability or between-question
+correlation within a conversation. Consistency is not semantic validation of the upstream predicate.
+
+## Reproduce the main tables — offline, one command, no API key
+
+From the repository root with Python 3 (standard library only; no install needed):
 
 ```bash
-git clone <this-repo>
-cd <this-repo>
+python3 reproduce_tables.py --out-dir reproduced_tables
+python3 reproduce_tables.py --selftest
+```
 
+Outputs: `reproduced_tables/tables.md` and `tables.json`. The entry validates **597 stored F1
+values**, identical question/gold/category sets, aggregate statistics, category-5 flags, evidence
+SHA-256 hashes, Bootstrap seed, BERTScore before/after values, meter arithmetic and the paired
+ablation outputs. Self-tests reject modified F1, a missing question and hash mismatch.
+
+Original baseline results (F1 %, mean ± sample std of three fixed-memory QA trials):
+
+| Category | n | Paper GPT-4o-mini | Reproduced, paper reference |
+|---|---|---|---|
+| Multi-Hop | 32 | 27.02 | 27.04 ± 4.40 |
+| Temporal | 37 | 45.85 | 21.56 ± 2.44 |
+| Open-Domain | 13 | 12.14 | 13.88 ± 1.75 |
+| Single-Hop | 70 | 44.65 | 43.08 ± 1.36 |
+| Adversarial | 47 | 50.03 | 31.93 ± 2.05 |
+| Overall | 199 | not reported | 31.96 ± 1.11 |
+
+Corrected-reference Adversarial: **69.40 ± 1.70**; Overall: **40.81 ± 1.43**. The exact mean
+Adversarial scoring shift is 37.46499 → **+37.46**, rounded after aggregation; it changes no
+predictions. The paper's trap-overlap F1 is not refusal accuracy.
+
+## Evidence included and provenance
+
+- `evidence/predictions/`: three original result JSON files, copied byte-for-byte. Their metadata
+  retains the original local dataset path, intentionally, to preserve raw-file identity.
+- `evidence/logs/`: original metering runs and BERTScore before/after logs. Machine absolute paths,
+  ANSI sequences and any credential-like strings are removed; timestamps/usage remain.
+- `evidence/baseline/`: 8 pairs × 3 BERTScore values; all 24 bit-identical before/after.
+- `evidence/temporal_contexts.json`: 37 exact historical answer prompts and context hashes.
+- `evidence/temporal_ablation.json` and `temporal_requests.jsonl`: paired predictions, response
+  model/usage fields and call records; no request headers or keys.
+- `evidence/manifest.json`, `provenance.json`, `sanitization.json`: SHA-256, full upstream and local
+  Git commits, real **uncommitted working-tree state** and log-redaction record.
+
+A hash checks file integrity/internal consistency, not independent attestation. The original
+three trials retained only the *requested* model. Their API-returned model field is **unknown**.
+All 74 new paired-ablation responses retain API `model: deepseek-flash`; that value does not
+retroactively identify the earlier trials or independently pin a provider checkpoint.
+
+## Supporting test — actual bounded Temporal prompt ablation
+
+Both arms use the same 37 seed-42 logged contexts; no new memory, retrieval or query generation.
+Only the date instruction changes: approximate dates versus absolute dates anchored to the
+relevant evidence session (`D Month YYYY`, `Month YYYY`, `YYYY`, supported precision only).
+System message, requested model, temperature 0.7, max_tokens 1000 and `utils.calculate_metrics`
+are unchanged; no gold dates are placed into prompts. Arms alternate first-arm order.
+
+| Condition | F1 | Same regex candidates | Share |
+|---|---|---|---|
+| Historical seed 42, context source only | 20.89 | 13/37 | 35.1% |
+| Original prompt, fresh paired control | **23.66** | **13/37** | **35.1%** |
+| Absolute-date prompt, fresh paired treatment | **57.49** | **2/37** | **5.4%** |
+| Treatment − fresh control | **+33.84 points** | **−11** | **−29.7 percentage points** |
+
+One pass per arm, 74 answer calls, no API sampling seed: **prompt sensitivity, not established
+stable accuracy or a significance claim**. The candidate share is the unchanged
+`analyze_temporal.REL/ABS` screening proxy, not a verified date-error rate. 57.49 is not evidence
+of exceeding the paper's 45.85. The old ≈9.28 sensitivity calculation is a different hypothetical
+subgroup-score replacement, not a causal decomposition of the ablation.
+
+The new calls used **980,412 input / 307 output tokens**, historical-meter estimate **$0.2746**
+(0.28/M input, 0.42/M output, cache discounts ignored; not an invoice).
+
+## Install for new paid pipeline runs
+
+The offline table reproduction above needs no dependencies. To generate new model predictions:
+
+```bash
 python3 -m venv venv
 source venv/bin/activate
-pip install -r requirements.txt
-```
-
-Two known install snags on a clean machine, and their fixes:
-
-- **`pip install rouge-score` may fail** with `EEXIST: mkdir .../pip-install-*`. Build it from the
-  sdist instead:
-  ```bash
-  curl -sLO https://files.pythonhosted.org/packages/e2/c5/9136736c37022a6ad27fea38f3111eb8f02fe75d067f9a985cc358653102/rouge_score-0.1.2.tar.gz
-  tar xzf rouge_score-0.1.2.tar.gz && pip install --no-build-isolation ./rouge_score-0.1.2
-  ```
-- **NLTK data may not download** in a restricted network. Fetch it manually and make it private,
-  or NLTK will refuse to load it:
-  ```bash
-  for p in tokenizers/punkt tokenizers/punkt_tab corpora/wordnet corpora/omw-1.4; do
-    curl -sLO https://raw.githubusercontent.com/nltk/nltk_data/gh-pages/packages/$p.zip
-    unzip -oq $(basename $p).zip -d ~/nltk_data/$(dirname $p)
-  done
-  chmod -R go-w ~/nltk_data
-  ```
-
-## Configure
-
-```bash
+python -m pip install -r requirements.txt
 cp .env.example .env
-# edit .env: DEEPSEEK_API_KEY=sk-...
+# Enter your own key in .env; never commit that file.
 ```
 
-Switching the model requires **no code change**: the repo's `RobustOpenAIController` builds
-`OpenAI(api_key=...)` without a `base_url`, and the `openai` SDK falls back to the
-`OPENAI_BASE_URL` environment variable.
-
-## Run
+Tested original environment: macOS Apple Silicon, CPU, Python 3.13.12. If the `rouge-score`
+sdist cannot extract, download its official PyPI sdist, extract and install the local directory
+with `--no-build-isolation`. For NLTK, install `punkt`, `punkt_tab`, `wordnet`, `omw-1.4` from the
+official `nltk_data` source if network restrictions block downloads; restrict write access.
+Model weights/corpora are required for full metrics but not for the offline evidence-table entry.
 
 ```bash
-# one conversation (conv-26), 199 questions, ~$1.13, ~45 min
-./run_eval.sh --ratio 0.1 --seed 42 --output result_seed42.json
-
-# three trials at different seeds; memories are cached and reused, so trials 2-3
-# only re-run QA (~$0.73 and ~14 min each)
+# API costs money. First run builds memory; cached repeats run QA only.
+./run_eval.sh --ratio 0.1 --seed 42 --retrieve_k 10 --output result_seed42.json
 ./run_trials.sh 3 0.1
-
-# same predictions, scored under the paper's category-5 reference
 python rescore_c5.py result_seed42.json --json
 python aggregate_legacy.py result_seed42_rescore.json
 ```
 
-Sanity checks that cost nothing:
+`run_eval.sh` reads `.env` and maps DeepSeek onto `OPENAI_API_KEY` / `OPENAI_BASE_URL`.
+Original first conversation: 1,723 calls (~1,325 memory + 398 QA), ~$1.13 historical meter;
+QA repeats: 398 calls, ~$0.73 each. Original three completed trials: **$2.59**; plus ablation,
+**~$2.86**. These are no-cache meter estimates, not account bills. Full-benchmark **scenarios**:
+~22,600 first-run calls / $12.9; ~3,972 QA-only calls / $7.3 with memory reused. They are not
+measured full-benchmark totals; phase dollars use QA-repeat costs as a first-run QA proxy.
+
+## Re-run the paired ablation (74 paid answer calls)
+
+Do not re-run merely to obtain the shipped table: use the offline entry. To generate a new run:
 
 ```bash
-python smoke_test.py     # imports, dataset, embeddings, metrics, prompt templates
-python dry_run.py --ratio 0.1   # full pipeline with a stub LLM, no API calls
+python ablate_temporal_prompt.py run   --inputs evidence/temporal_contexts.json   --checkpoint temporal_requests_new.jsonl --out temporal_ablation_new.json   --env-file .env --max-meter-usd 1.0
 ```
 
-## What changed
-
-### 1. `utils.py` — reuse the BERTScore model (+24/−1 lines)
-
-`bert_score.score()` calls `bert_score.utils.get_model()`, which has **no `lru_cache`**, so every
-question re-loaded ~1.4 GB of `roberta-large` weights. Metric computation was 6.07 s per
-question — 99.8% of the runtime — i.e. 4.3 hours for the 1,986-question benchmark.
-
-The fix builds one `BERTScorer` and reuses it. Values are unchanged: 24 of 24 compared numbers are
-bit-identical, and two full 199-question runs produced **0 prediction differences and 0 metric
-differences** (max |Δ| = 0.00e+00). Speed: **7.83 s → 0.12 s per question (~65×)**.
-
-This is an engineering fix, not the study's measured modification.
-
-### 2. `tools` — evaluation instrumentation
-
-| File | Purpose |
-|---|---|
-| `meter.py` | Patches `Completions.create` to record token usage; repo untouched |
-| `run_metered.py` | Drop-in entry point that reports tokens and cost |
-| `dry_run.py` | Stub backend for end-to-end validation at zero cost |
-| `smoke_test.py` | Five environment checks |
-| `rescore_c5.py` | Re-scores stored predictions under both category-5 references |
-| `aggregate_trials.py` | mean ± std table against the paper's numbers |
-| `aggregate_legacy.py` | Aggregates the paper-reference rescores across trials |
-| `analyze_temporal.py` | Splits the Temporal category into date-format mismatches vs. genuine errors |
-| `analyze_c5.py` | Category-5 refusal rate: Wilson intervals, failure modes, F1-vs-behaviour cross-tab |
-| `capture_bert_baseline.py` | Before/after numerical equality check for the BERTScore fix |
-
-## The measured modifications
-
-### 1. Which string category 5 is scored against
-
-Commit `b31a1dd` (2026-10-21) changed how category-5 (adversarial) questions are scored. Its
-message states the old behaviour plainly:
-
-> `QA.final_answer` returns the adversarial answer for category 5. It is the wrong option offered
-> in the prompt, but both runners also used it as the reference, so **picking the trap scored
-> high**. … `--legacy_c5_reference` restores the previous scoring, **which is what the paper's
-> numbers used**.
-
-So the paper's Adversarial column was scored against the *wrong* answer. On identical
-predictions, switching to the corrected reference moves that column by **+37.47** and the overall
-score by **+8.85**, with no change in model behaviour (mean over three trials; per-trial shifts
-are +34.66, +36.26 and +41.47).
-
-### 2. Reporting the metric the evaluator already computes
-
-`utils.score_prediction` writes `adversarial_correct` into every category-5 metric dict, and
-`aggregate_metrics` carries it into `aggregate_metrics["category_5"]` — but no table anywhere reads
-it. `analyze_c5.py` does: it re-derives the flag from the stored predictions, asserts the two
-implementations agree on every question, and reports the rate with a confidence interval instead of
-a token-overlap F1.
+An existing checkpoint is refused unless `--resume` is explicit. The budget is checked between
+calls, not a guaranteed provider spending cap. Metrics are validated against the same original
+F1 implementation. To extract new contexts from a completed original log:
 
 ```bash
-python analyze_c5.py result_conv26_new.json result_conv26_seed43.json result_conv26_seed44.json
+python ablate_temporal_prompt.py prepare   --baseline result_seed42.json --log path_to_completed_evaluation.log   --out temporal_contexts_new.json
 ```
 
-Reads predictions already on disk — no API calls, no model downloads.
+`utils.py` changes only BERTScorer reuse. Metrics went **7.83 → 0.12 s/question (~65×)**; BERTScore
+was 6.07/7.83 s (~77%), not 99.8%. The report separates this engineering fix from the formal
+modification. Original memory/retrieval and prompts are preserved; paired replay is a new driver.
 
-```
-     trial    n   ok    rate      95% Wilson CI  F1|refusal   F1|trap
-   seed 42   47   31  65.96%       [51.7, 77.8]      67.64     32.98
-   seed 43   47   32  68.09%       [53.8, 79.6]      69.51     33.25
-   seed 44   47   33  70.21%       [56.0, 81.3]      71.05     29.58
-    pooled  141   96  68.09%       [60.0, 75.2]
-```
+## Secrets and publishing status
 
-Across three trials the model refuses the trap on **68.09% ± 2.13** of the 47 questions. The
-failures are 43 outright bait-takings, 2 unrelated answers, and **zero** cases of hedging (decline
-plus echo). F1 against the trap answer is **2.11** when the model refused and **95.56** when it did
-not: the two instruments disagree on **139 of 141 questions (98.6%)**, i.e. the F1 column ranks
-models by bait rate rather than by trap-handling.
+`.env`, keys, private memory caches, virtual environments and model weights are not included.
+Only the explicit `evidence/` files are intended for public sharing; ordinary new run outputs
+remain ignored. Do not upload arbitrary logs or credentials. No new commit or push was made;
+`provenance.json` records the honest local HEAD rather than pretending the current files are committed.
 
-Full results, debug diary and conclusions are in [`REPORT.md`](REPORT.md).
+## Formal references / data sources
 
-## Secrets
-
-`.env` is git-ignored. No API key is committed anywhere in this repository. Run artifacts
-(`result_*.json`, caches, logs) are git-ignored as well.
+1. Xu, W., Liang, Z., Mei, K., Gao, H., Tan, J., and Zhang, Y. (2025). *A-Mem: Agentic Memory for
+   LLM Agents*. NeurIPS 2025. [arXiv:2502.12110v11](https://arxiv.org/abs/2502.12110v11).
+2. Maharana, A., Lee, D.-H., Tulyakov, S., Bansal, M., Barbieri, F., and Fang, Y. (2024).
+   *Evaluating Very Long-Term Conversational Memory of LLM Agents*. ACL 2024, 13851–13870.
+   [doi:10.18653/v1/2024.acl-long.747](https://aclanthology.org/2024.acl-long.747/).
+3. [A-Mem evaluation repository](https://github.com/WujiangXu/A-mem), pinned `b31a1dd`;
+   [upstream scoring-fix commit](https://github.com/WujiangXu/A-mem/commit/b31a1dd).
+4. [LoCoMo official repository](https://github.com/snap-research/locomo) and
+   [project page](https://snap-research.github.io/locomo/). Actual evaluated bytes are the
+   in-repo `data/locomo10.json`, fingerprinted in the manifest.
 
 ---
 

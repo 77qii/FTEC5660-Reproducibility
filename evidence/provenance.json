@@ -1,0 +1,63 @@
+{
+  "upstream": {
+    "repository": "A-mem",
+    "commit": "b31a1dddf56f87ec762cce3539418602d7e2ffb1",
+    "commit_short": "b31a1dd",
+    "commit_subject": "Fix LoCoMo evaluation issues (#27-#29) and memory-layer bugs (#31)",
+    "resolved_locally": true,
+    "note": "commit b31a1dd is the upstream fix for the category-5 reference; this repository builds on it rather than re-deriving it"
+  },
+  "local": {
+    "head": "0877a3ccc599c5377c9fd7d5baaa70d65b4c7204",
+    "head_subject": "Tighten §5 to fit the page limit, and handle a run with no failures",
+    "working_tree_uncommitted": true,
+    "dirty_paths": [
+      " M .gitignore",
+      " M README.md",
+      " M REPORT.md",
+      " M aggregate_legacy.py",
+      " M analyze_c5.py",
+      " M analyze_temporal.py",
+      " M utils.py",
+      "?? ablate_temporal_prompt.py",
+      "?? evidence/",
+      "?? reproduce_tables.py"
+    ],
+    "note": "computed at prepare time from git; not asserted clean"
+  },
+  "source_environment": {
+    "path": "/Users/macbook/WorkBuddy AI/2026-10-26-18-47-49/repro-amem",
+    "upstream_head": "b31a1dddf56f87ec762cce3539418602d7e2ffb1",
+    "upstream_dirty_paths": [
+      " M utils.py",
+      "?? cached_memories_robust_openai_deepseek-chat/",
+      "?? cached_memories_robust_openai_stub-dry-run-v2/",
+      "?? cached_memories_robust_openai_stub-dry-run/",
+      "?? dry_run_result.json",
+      "?? dry_run_result_v2.json",
+      "?? logs/",
+      "?? result_conv26_new.json",
+      "?? result_conv26_new_rescore.json",
+      "?? result_conv26_seed43.json",
+      "?? result_conv26_seed43_rescore.json",
+      "?? result_conv26_seed44.json",
+      "?? result_conv26_seed44_rescore.json"
+    ]
+  },
+  "local_vs_source": {
+    "source": "A-mem/utils.py",
+    "local": "utils.py",
+    "utils_py_identical": false,
+    "utils_py_sha256_source": "9ded2c4472bf74842beb28a786f256e62f903536570aeb0d3a71b9a2cd8bb066",
+    "utils_py_sha256_local": "bb5969352ead45ff4df2e984e27d539e896e7c05274d0055407d8fb577027a17",
+    "changed_lines": 2,
+    "differences_are_comments_only": true,
+    "note": "differ in 2 comment line(s) and nothing else; no executable change, so both score identically",
+    "changed_examples": [
+      "-# 实测单题 6.07 秒，占 calculate_metrics 总耗时的 99.8%，1986 题要 4.3 小时。",
+      "+# 实测单题 6.07 秒，占 calculate_metrics 总耗时的 77%，1986 题要 4.3 小时。"
+    ],
+    "upstream_utils_py_sha256": "531c616430e1c15dd9120f2b8fbc5f4bf58163df9b1f2bf76812748d13500e18",
+    "upstream_has_bert_scorer_reuse": false
+  }
+}

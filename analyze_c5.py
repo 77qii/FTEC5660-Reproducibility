@@ -12,7 +12,8 @@ This script reads the stored per-question predictions (no API calls, no model do
   1. re-derives `adversarial_correct` from scratch, independently of utils.py, and asserts it matches
      the stored value on every question -- so a drift in either implementation shows up as a failure
      rather than as a quietly different number;
-  2. reports the refusal rate per trial with a Wilson 95% interval, plus mean +/- std across trials;
+  2. reports per-trial Wilson intervals and a question-cluster bootstrap interval for repeated QA;
+     the pooled Wilson is explicitly naive, and across-trial std is conditional on shared memory;
   3. decomposes the failures into mutually exclusive behavioural modes;
   4. cross-tabulates token F1 against the binary verdict under both reference conventions, which is
      where the two instruments turn out to disagree.
@@ -29,6 +30,7 @@ import argparse
 import glob
 import json
 import math
+import random
 import statistics
 import sys
 
@@ -84,7 +86,7 @@ def mean_or_none(values):
 
 
 def wilson(k, n, z=Z95):
-    """95% Wilson score interval -- the right interval for n=47, where normal-approx is too narrow."""
+    """Wilson score interval for binomial summaries; does not model question dependence."""
     if n == 0:
         return 0.0, 0.0
     p = k / n
@@ -92,6 +94,60 @@ def wilson(k, n, z=Z95):
     centre = (p + z * z / (2 * n)) / denom
     half = z * math.sqrt(p * (1 - p) / n + z * z / (4 * n * n)) / denom
     return max(0.0, centre - half), min(1.0, centre + half)
+
+
+def percentile(values, q):
+    """Linear-interpolated empirical quantile; q is in [0, 1]."""
+    pos = (len(values) - 1) * q
+    low = math.floor(pos)
+    high = math.ceil(pos)
+    return values[low] + (pos - low) * (values[high] - values[low])
+
+
+def cluster_bootstrap(trials, resamples=20000, seed=20261026):
+    """Resample questions, keeping all repeated QA outcomes for a question together.
+
+    Requires a balanced repeated-question design. Identity is (sample_id, question), not
+    question text alone. This accounts for repeated-question dependence, but not dependence
+    between different questions from the same conversation or uncertainty from rebuilding
+    memories. The interval is exploratory and conditional on the stored memory and trials.
+    """
+    if resamples < 1000:
+        raise ValueError("bootstrap requires at least 1000 resamples")
+    by_trial = []
+    for _, rows in trials:
+        groups = {}
+        for r in rows:
+            key = (r["sample_id"], r["question"])
+            if key[0] is None or not key[1]:
+                raise ValueError("sample_id and question are required for cluster identity")
+            if key in groups:
+                raise ValueError(f"duplicate question within a trial: {key!r}")
+            groups[key] = r
+        by_trial.append(groups)
+    keys = sorted(by_trial[0], key=lambda k: (str(k[0]), k[1]))
+    if any(set(t) != set(keys) for t in by_trial):
+        raise ValueError("trials must contain identical question sets for cluster bootstrap")
+    for key in keys:
+        if any(t[key]["trap"] != by_trial[0][key]["trap"] for t in by_trial):
+            raise ValueError(f"trap reference changed across trials: {key!r}")
+    successes = [sum(t[key]["correct"] for t in by_trial) for key in keys]
+    n_questions, n_trials = len(keys), len(trials)
+    rng = random.Random(seed)
+    draws = sorted(
+        100.0 * sum(rng.choices(successes, k=n_questions)) / (n_questions * n_trials)
+        for _ in range(resamples)
+    )
+    return {
+        "method": "question-cluster percentile bootstrap",
+        "n_questions": n_questions,
+        "n_trials": n_trials,
+        "resamples": resamples,
+        "seed": seed,
+        "ci_low": percentile(draws, 0.025),
+        "ci_high": percentile(draws, 0.975),
+        "scope": "conditional on stored memory and QA trials; no conversation-level inference",
+    }
 
 
 # --------------------------------------------------------------------------- loading
@@ -141,6 +197,7 @@ def load_trial(path):
 
         rows.append({
             "seed": data.get("seed"),
+            "sample_id": r.get("sample_id"),
             "question": r.get("question"),
             "prediction": prediction,
             "trap": trap,
@@ -180,7 +237,7 @@ MODE_NOTE = {
 
 # --------------------------------------------------------------------------- reporting
 
-def summarize(trials):
+def summarize(trials, resamples=20000, bootstrap_seed=20261026):
     per_trial = []
     for seed, rows in trials:
         n = len(rows)
@@ -220,6 +277,8 @@ def summarize(trials):
             "min": min(rates),
             "max": max(rates),
         },
+        "cluster_bootstrap": cluster_bootstrap(trials, resamples, bootstrap_seed),
+        "pooled_interval_note": "naive pooled Wilson; ignores repeated-question dependence",
         "disagreement": disagreement(pooled_rows),
         "rows": pooled_rows,
     }
@@ -281,6 +340,16 @@ def render_markdown(s):
     )
     out.append("")
 
+    b = s["cluster_bootstrap"]
+    out.append(
+        f"Pooled Wilson above is **naive** (ignores repeated-question dependence). "
+        f"Question-cluster 95% percentile interval: **[{b['ci_low']:.1f}, {b['ci_high']:.1f}]**, "
+        f"{b['n_questions']} question clusters x {b['n_trials']} QA trials; "
+        f"{b['resamples']:,} resamples, RNG seed {b['seed']}."
+    )
+    out.append("Conditional on the stored memory and QA trials; not end-to-end pipeline stability "
+               "or a full-benchmark interval. Cross-question conversation dependence is not modelled.")
+    out.append("")
     out.append("### What the failures actually are")
     out.append("")
     out.append("| Mode | Questions | Share |")
@@ -326,6 +395,12 @@ def render_console(s):
     print(f"\nacross {a['n_trials']} trials: {a['mean']:.2f} +/- {a['std']:.2f} "
           f"(range {a['min']:.2f}-{a['max']:.2f})")
 
+    b = s["cluster_bootstrap"]
+    print("\npooled Wilson is naive: ignores repeated-question dependence")
+    print(f"question-cluster 95% percentile CI: [{b['ci_low']:.1f}, {b['ci_high']:.1f}] "
+          f"({b['n_questions']} clusters x {b['n_trials']} trials; "
+          f"{b['resamples']:,} resamples, seed {b['seed']})")
+    print("conditional on stored memory/trials; no cross-question conversation dependence modelled")
     print("\nfailure modes")
     print("-" * 78)
     for m in MODES:
@@ -347,15 +422,24 @@ def main():
     ap.add_argument("results", nargs="+", help="result_*.json files from test_advanced_robust.py")
     ap.add_argument("--json", metavar="PATH", help="write the full summary as JSON")
     ap.add_argument("--md", metavar="PATH", help="write markdown tables")
+    ap.add_argument("--bootstrap-resamples", type=int, default=20000, help="question-cluster resamples (>=1000)")
+    ap.add_argument("--bootstrap-seed", type=int, default=20261026, help="local bootstrap RNG seed, not an LLM seed")
     args = ap.parse_args()
+    if args.bootstrap_resamples < 1000:
+        ap.error("--bootstrap-resamples must be >=1000")
 
     paths = []
     for pattern in args.results:
         hits = sorted(glob.glob(pattern)) or [pattern]
         paths.extend(hits)
 
+    if len(set(paths)) != len(paths):
+        ap.error("the same result path was supplied more than once")
     trials = [load_trial(p) for p in paths]
-    summary = summarize(trials)
+    try:
+        summary = summarize(trials, args.bootstrap_resamples, args.bootstrap_seed)
+    except ValueError as exc:
+        ap.error(str(exc))
     render_console(summary)
 
     if args.json:

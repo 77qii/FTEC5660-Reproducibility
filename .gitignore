@@ -18,3 +18,17 @@ bert_baseline_*.json
 smoke.log
 dry_run*.log
 *.log
+
+# Explicit, reviewed public evidence only (other run artifacts remain ignored).
+!evidence/
+!evidence/logs/
+!evidence/logs/run_real_t1.log
+!evidence/logs/run_real_seed43.log
+!evidence/logs/run_real_seed44.log
+!evidence/logs/baseline_before.log
+!evidence/logs/baseline_after.log
+!evidence/predictions/result_conv26_new.json
+!evidence/predictions/result_conv26_seed43.json
+!evidence/predictions/result_conv26_seed44.json
+!evidence/baseline/bert_baseline_before.json
+!evidence/baseline/bert_baseline_after.json

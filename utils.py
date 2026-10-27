@@ -70,7 +70,7 @@ def calculate_bleu_scores(prediction: str, reference: str) -> Dict[str, float]:
 #
 # 原实现调用 bert_score.score()，而 bert_score.utils.get_model() 没有 lru_cache，
 # 于是每道题都会重新 from_pretrained("roberta-large") 加载约 1.4GB 权重：
-# 实测单题 6.07 秒，占 calculate_metrics 总耗时的 99.8%，1986 题要 4.3 小时。
+# 实测单题 6.07 秒，占 calculate_metrics 总耗时的 77%，1986 题要 4.3 小时。
 #
 # 这里改为复用一个 BERTScorer 实例：模型只加载一次，评分参数（lang='en'、
 # batch_size、rescale_with_baseline 等）与 score() 的默认值完全一致，

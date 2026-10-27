@@ -1,0 +1,116 @@
+{
+  "policy": "只删除机器绝对路径、ANSI 控制符与潜在凭据；时间戳、token 计数、成本块与预测文本原样保留",
+  "source_dir_note": "absolute source paths are recorded here only; the shipped logs and predictions are scrubbed or verbatim as noted",
+  "files": [
+    {
+      "source": "run_real_t1.log",
+      "evidence": "logs/run_real_t1.log",
+      "original_sha256": "11c14a021dca4a8cc365ad8803dfae41477e0fd843e123c28705e06fe32802e3",
+      "sanitized_sha256": "fea232253a53a1455288018912e8242cbd5f4eddc6556293c2c8ff6957b2041b",
+      "original_bytes": 46275781,
+      "sanitized_bytes": 46275635,
+      "replacements": {
+        "ansi": 2,
+        "abs_prefix": 3,
+        "abs_parent": 0,
+        "user_path": 0,
+        "redacted": 0
+      },
+      "steps": [
+        "strip ANSI CSI escape sequences",
+        "replace the experiment root with <REPRO_ROOT>",
+        "replace the workspace root with <WORKSPACE>",
+        "replace /Users/<name> with /Users/<USER>",
+        "redact credential-like strings if any (count recorded)"
+      ]
+    },
+    {
+      "source": "run_real_seed43.log",
+      "evidence": "logs/run_real_seed43.log",
+      "original_sha256": "ad0543471cdf87aa6b9c0d752be43cec90bc451771bd0925e6ff6e0a55980f51",
+      "sanitized_sha256": "ec678ba794fee007c3e3a3eb03bf42072cad3eda2d7f0efa982e7b73c9b4f546",
+      "original_bytes": 46141948,
+      "sanitized_bytes": 46141618,
+      "replacements": {
+        "ansi": 2,
+        "abs_prefix": 7,
+        "abs_parent": 0,
+        "user_path": 0,
+        "redacted": 0
+      },
+      "steps": [
+        "strip ANSI CSI escape sequences",
+        "replace the experiment root with <REPRO_ROOT>",
+        "replace the workspace root with <WORKSPACE>",
+        "replace /Users/<name> with /Users/<USER>",
+        "redact credential-like strings if any (count recorded)"
+      ]
+    },
+    {
+      "source": "run_real_seed44.log",
+      "evidence": "logs/run_real_seed44.log",
+      "original_sha256": "6b214a9d39cf083d871a256e829a39feebf1217d26c4c12b0f59aac82fa8303a",
+      "sanitized_sha256": "9e0165fc96886be144d4d674293ebbd2f045f399672bbe5fbfa4a3164475f4c0",
+      "original_bytes": 46214532,
+      "sanitized_bytes": 46214202,
+      "replacements": {
+        "ansi": 2,
+        "abs_prefix": 7,
+        "abs_parent": 0,
+        "user_path": 0,
+        "redacted": 0
+      },
+      "steps": [
+        "strip ANSI CSI escape sequences",
+        "replace the experiment root with <REPRO_ROOT>",
+        "replace the workspace root with <WORKSPACE>",
+        "replace /Users/<name> with /Users/<USER>",
+        "redact credential-like strings if any (count recorded)"
+      ]
+    },
+    {
+      "source": "baseline_before.log",
+      "evidence": "logs/baseline_before.log",
+      "original_sha256": "d467e0165525e806f7e54e537ecf2fb626e055a60a85b75f4dad80b8ce0ab62c",
+      "sanitized_sha256": "dfc0f623747038c1fcf8ed74b20ba865c90518a602b105095121ea59d23614fb",
+      "original_bytes": 8573,
+      "sanitized_bytes": 8463,
+      "replacements": {
+        "ansi": 16,
+        "abs_prefix": 1,
+        "abs_parent": 0,
+        "user_path": 0,
+        "redacted": 0
+      },
+      "steps": [
+        "strip ANSI CSI escape sequences",
+        "replace the experiment root with <REPRO_ROOT>",
+        "replace the workspace root with <WORKSPACE>",
+        "replace /Users/<name> with /Users/<USER>",
+        "redact credential-like strings if any (count recorded)"
+      ]
+    },
+    {
+      "source": "baseline_after.log",
+      "evidence": "logs/baseline_after.log",
+      "original_sha256": "815ae682843954f54108920f799a4d30f6a2c1c72da87d559f709d1d7995e795",
+      "sanitized_sha256": "53e2c3cb4bab9f9982c82a4857482951adc034ee50e4faa9394031e010947985",
+      "original_bytes": 2898,
+      "sanitized_bytes": 2844,
+      "replacements": {
+        "ansi": 2,
+        "abs_prefix": 1,
+        "abs_parent": 0,
+        "user_path": 0,
+        "redacted": 0
+      },
+      "steps": [
+        "strip ANSI CSI escape sequences",
+        "replace the experiment root with <REPRO_ROOT>",
+        "replace the workspace root with <WORKSPACE>",
+        "replace /Users/<name> with /Users/<USER>",
+        "redact credential-like strings if any (count recorded)"
+      ]
+    }
+  ]
+}

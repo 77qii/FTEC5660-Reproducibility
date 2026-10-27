@@ -1,0 +1,220 @@
+{
+  "upstream_commit": "b31a1dd",
+  "entries": [
+    {
+      "kind": "prediction",
+      "source": "A-mem/result_conv26_new.json",
+      "evidence": "predictions/result_conv26_new.json",
+      "sha256": "03e841f53c9c8d7a910c7cdf14d81acc36c5faad91f66a8652c950a59bad681c",
+      "bytes": 169731,
+      "copied_verbatim": true,
+      "state": "unchanged"
+    },
+    {
+      "kind": "prediction",
+      "source": "A-mem/result_conv26_seed43.json",
+      "evidence": "predictions/result_conv26_seed43.json",
+      "sha256": "204a581e851d935690be7b7d284dc6c1942e201673886fcda07115bc67e3536e",
+      "bytes": 169596,
+      "copied_verbatim": true,
+      "state": "unchanged"
+    },
+    {
+      "kind": "prediction",
+      "source": "A-mem/result_conv26_seed44.json",
+      "evidence": "predictions/result_conv26_seed44.json",
+      "sha256": "7ffc393b086af233427a3a181afa26c4206b44cd1dd9d01d8512147d72e968c9",
+      "bytes": 169995,
+      "copied_verbatim": true,
+      "state": "unchanged"
+    },
+    {
+      "kind": "log",
+      "source": "run_real_t1.log",
+      "evidence": "logs/run_real_t1.log",
+      "original_sha256": "11c14a021dca4a8cc365ad8803dfae41477e0fd843e123c28705e06fe32802e3",
+      "original_bytes": 46275781,
+      "sha256": "fea232253a53a1455288018912e8242cbd5f4eddc6556293c2c8ff6957b2041b",
+      "bytes": 46275635,
+      "state": "unchanged"
+    },
+    {
+      "kind": "log",
+      "source": "run_real_seed43.log",
+      "evidence": "logs/run_real_seed43.log",
+      "original_sha256": "ad0543471cdf87aa6b9c0d752be43cec90bc451771bd0925e6ff6e0a55980f51",
+      "original_bytes": 46141948,
+      "sha256": "ec678ba794fee007c3e3a3eb03bf42072cad3eda2d7f0efa982e7b73c9b4f546",
+      "bytes": 46141618,
+      "state": "unchanged"
+    },
+    {
+      "kind": "log",
+      "source": "run_real_seed44.log",
+      "evidence": "logs/run_real_seed44.log",
+      "original_sha256": "6b214a9d39cf083d871a256e829a39feebf1217d26c4c12b0f59aac82fa8303a",
+      "original_bytes": 46214532,
+      "sha256": "9e0165fc96886be144d4d674293ebbd2f045f399672bbe5fbfa4a3164475f4c0",
+      "bytes": 46214202,
+      "state": "unchanged"
+    },
+    {
+      "kind": "log",
+      "source": "baseline_before.log",
+      "evidence": "logs/baseline_before.log",
+      "original_sha256": "d467e0165525e806f7e54e537ecf2fb626e055a60a85b75f4dad80b8ce0ab62c",
+      "original_bytes": 8573,
+      "sha256": "dfc0f623747038c1fcf8ed74b20ba865c90518a602b105095121ea59d23614fb",
+      "bytes": 8463,
+      "state": "unchanged"
+    },
+    {
+      "kind": "log",
+      "source": "baseline_after.log",
+      "evidence": "logs/baseline_after.log",
+      "original_sha256": "815ae682843954f54108920f799a4d30f6a2c1c72da87d559f709d1d7995e795",
+      "original_bytes": 2898,
+      "sha256": "53e2c3cb4bab9f9982c82a4857482951adc034ee50e4faa9394031e010947985",
+      "bytes": 2844,
+      "state": "unchanged"
+    },
+    {
+      "kind": "bertscore_baseline",
+      "source": "bert_baseline_before.json",
+      "evidence": "baseline/bert_baseline_before.json",
+      "sha256": "2b312041a43b6582726a47e08e5edd62d5b099e01531042e17c78f9805f19406",
+      "bytes": 1702,
+      "state": "unchanged"
+    },
+    {
+      "kind": "bertscore_baseline",
+      "source": "bert_baseline_after.json",
+      "evidence": "baseline/bert_baseline_after.json",
+      "sha256": "2b312041a43b6582726a47e08e5edd62d5b099e01531042e17c78f9805f19406",
+      "bytes": 1702,
+      "state": "unchanged"
+    },
+    {
+      "kind": "dataset",
+      "source": "A-mem/data/locomo10.json",
+      "sha256": "79fa87e90f04081343b8c8debecb80a9a6842b76a7aa537dc9fdf651ea698ff4",
+      "bytes": 2805274,
+      "shipped": false
+    },
+    {
+      "kind": "script",
+      "source": "reproduce_tables.py",
+      "sha256": "cdea1b31305b33d02991c5b32fdc65698a810b4a3bfee65dd2ab036687f6b7de",
+      "bytes": 67294,
+      "shipped": false
+    },
+    {
+      "kind": "script",
+      "source": "analyze_c5.py",
+      "sha256": "cae0166717ede9173733c5f02197425377be9304f145410cce94793e2e0a180c",
+      "bytes": 19526,
+      "shipped": false
+    },
+    {
+      "kind": "script",
+      "source": "analyze_temporal.py",
+      "sha256": "fb506390d7a6d3d526a0cf825cb14920585867dc0c10ce7e9827c1caa59f2aca",
+      "bytes": 2384,
+      "shipped": false
+    },
+    {
+      "kind": "script",
+      "source": "aggregate_legacy.py",
+      "sha256": "183e844af600d63ca6202abdacfb98ae8a5b633ce717fe278efb9fa0eddd1265",
+      "bytes": 1956,
+      "shipped": false
+    },
+    {
+      "kind": "script",
+      "source": "utils.py",
+      "sha256": "bb5969352ead45ff4df2e984e27d539e896e7c05274d0055407d8fb577027a17",
+      "bytes": 9879,
+      "shipped": false
+    },
+    {
+      "kind": "script",
+      "source": "meter.py",
+      "sha256": "839b27006dbb534f058525a6ec351af94ef00c08681e83bb286300195f6e812f",
+      "bytes": 2426,
+      "shipped": false
+    },
+    {
+      "kind": "script",
+      "source": "run_metered.py",
+      "sha256": "561c20318cd76cf345cd8e177c0f5c8bb7dad084b2a2b8bbfdebf68dbe8a8304",
+      "bytes": 575,
+      "shipped": false
+    },
+    {
+      "kind": "script",
+      "source": "rescore_c5.py",
+      "sha256": "bad37162ee15475dcbeab9b66dde0831c3633f50f98e9362449f10ecdc71c311",
+      "bytes": 3349,
+      "shipped": false
+    },
+    {
+      "kind": "script",
+      "source": "capture_bert_baseline.py",
+      "sha256": "2ff86d83024e633337fc640dbfa5f60f99960e2e50d825b40e833e4ea41a3818",
+      "bytes": 1236,
+      "shipped": false
+    },
+    {
+      "kind": "script",
+      "source": "ablate_temporal_prompt.py",
+      "sha256": "0084c201ff46588c9edd258fe12b7e31332d7543153e3bac2573b3705357fdb4",
+      "bytes": 10880,
+      "shipped": false
+    },
+    {
+      "kind": "script",
+      "source": "run_trials.sh",
+      "sha256": "a5b6b1b8b70962d7658dd8447dc5fa9dff8f195f26cad409cbc176a3ca4c802a",
+      "bytes": 1275,
+      "shipped": false
+    },
+    {
+      "kind": "ablation_inputs",
+      "source": "temporal_contexts.json",
+      "evidence": "temporal_contexts.json",
+      "sha256": "52b0be1a6441b64b36d086cdc672636107f52a95b0975d3641397589cfdbf63a",
+      "bytes": 4383123,
+      "shipped": true,
+      "note": "produced outside this script; hashed so a later edit invalidates the report"
+    },
+    {
+      "kind": "ablation_result",
+      "source": "temporal_ablation.json",
+      "evidence": "temporal_ablation.json",
+      "sha256": "c5c9accd6423a8a71aa572cdcb1b2a56b949b605ba2931b7986fb4f0ae4306ed",
+      "bytes": 81548,
+      "shipped": true,
+      "note": "produced outside this script; hashed so a later edit invalidates the report"
+    },
+    {
+      "kind": "ablation_requests",
+      "source": "temporal_requests.jsonl",
+      "evidence": "temporal_requests.jsonl",
+      "sha256": "b289fe1a6af1c481499c58bc396897191c05a3cd83e152415ce7ec348b8d6fe6",
+      "bytes": 50470,
+      "shipped": true,
+      "note": "produced outside this script; hashed so a later edit invalidates the report"
+    }
+  ],
+  "prepared_from": "/Users/macbook/WorkBuddy AI/2026-10-26-18-47-49/repro-amem",
+  "sanitisation": "sanitization.json",
+  "temporal_contexts": {
+    "evidence": "temporal_contexts.json",
+    "sha256": "52b0be1a6441b64b36d086cdc672636107f52a95b0975d3641397589cfdbf63a",
+    "source_log_sha256": "ec018e1f723b64488ef3ee82d4909ed4a0243cf818aef0d45b987f32b85b579c",
+    "source_log_matches": {
+      "A-mem/logs/eval_robust_deepseek-chat_openai_ratio0.1_conversation_2026-10-26-21-45.log": "ec018e1f723b64488ef3ee82d4909ed4a0243cf818aef0d45b987f32b85b579c"
+    },
+    "note": "the harness also writes its own log under A-mem/logs/; temporal_contexts.json was extracted from that file, which is a subset of the console capture in logs/run_real_t1.log, so their hashes differ by construction"
+  }
+}

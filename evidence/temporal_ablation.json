@@ -1,0 +1,2522 @@
+{
+  "experiment": "paired fixed-context Temporal prompt replay",
+  "started_at_utc": "2026-10-27T11:08:48.379055+00:00",
+  "completed_at_utc": "2026-10-27T11:13:46.257127+00:00",
+  "inputs_sha256": "52b0be1a6441b64b36d086cdc672636107f52a95b0975d3641397589cfdbf63a",
+  "model_requested": "deepseek-chat",
+  "models_returned": [
+    "deepseek-flash"
+  ],
+  "system_message": "Follow the format specified in the prompt exactly. Do not add extra commentary.",
+  "temperature": 0.7,
+  "max_tokens": 1000,
+  "order": "interleaved; original first on even indices, absolute first on odd indices",
+  "calls": 74,
+  "prompt_tokens": 980412,
+  "completion_tokens": 307,
+  "meter_usd": 0.27464430000000006,
+  "price_note": "same historical meter rates; cache discounts ignored; not an invoice",
+  "scope": "37 questions, seed-42 logged contexts; one answer per arm; no API sampling seed; no causal/significance claim",
+  "format_note": "unchanged analyze_temporal.REL/ABS regex; candidate rate, not semantic error rate",
+  "summary": {
+    "historical": {
+      "n": 37,
+      "f1": 20.888225888225886,
+      "format_candidates": 13,
+      "format_candidate_pct": 35.13513513513514
+    },
+    "original": {
+      "n": 37,
+      "f1": 23.655278655278657,
+      "format_candidates": 13,
+      "format_candidate_pct": 35.13513513513514
+    },
+    "absolute": {
+      "n": 37,
+      "f1": 57.492492492492495,
+      "format_candidates": 2,
+      "format_candidate_pct": 5.405405405405405
+    }
+  },
+  "rows": [
+    {
+      "sample_id": 0,
+      "question": "When did Caroline go to the LGBTQ support group?",
+      "reference": "7 May 2023",
+      "category": 2,
+      "question_index": 1,
+      "context_sha256": "caf8f237277720c3555842aa05d8dd905956efee1b7a78b0fb763c2619d1406b",
+      "historical": {
+        "prediction": "Yesterday",
+        "metrics": {
+          "exact_match": 0,
+          "f1": 0.0,
+          "rouge1_f": 0.0,
+          "rouge2_f": 0.0,
+          "rougeL_f": 0.0,
+          "bleu1": 0,
+          "bleu2": 0,
+          "bleu3": 0,
+          "bleu4": 0,
+          "bert_precision": 0.8727426528930664,
+          "bert_recall": 0.8238971829414368,
+          "bert_f1": 0.8476168513298035,
+          "meteor": 0.0,
+          "sbert_similarity": 0.3402392864227295
+        }
+      },
+      "original": {
+        "prediction": "Yesterday, 7 May 2023",
+        "metrics": {
+          "exact_match": 0,
+          "f1": 0.8571428571428571,
+          "rouge1_f": 0.8571428571428571,
+          "rouge2_f": 0.8,
+          "rougeL_f": 0.8571428571428571,
+          "bleu1": 0.6,
+          "bleu2": 0.5477225575051662,
+          "bleu3": 0.4677351412871982,
+          "bleu4": 0.26591479484724945,
+          "bert_precision": 0.8939018249511719,
+          "bert_recall": 0.933430552482605,
+          "bert_f1": 0.9132386445999146,
+          "meteor": 0.9498207885304659,
+          "sbert_similarity": 0.909677267074585
+        },
+        "model_returned": "deepseek-flash"
+      },
+      "absolute": {
+        "prediction": "7 May 2023",
+        "metrics": {
+          "exact_match": 1,
+          "f1": 1.0,
+          "rouge1_f": 1.0,
+          "rouge2_f": 1.0,
+          "rougeL_f": 1.0,
+          "bleu1": 1.0,
+          "bleu2": 1.0,
+          "bleu3": 1.0,
+          "bleu4": 0.5623413251903491,
+          "bert_precision": 1.0000001192092896,
+          "bert_recall": 1.0000001192092896,
+          "bert_f1": 1.0000001192092896,
+          "meteor": 0.9814814814814815,
+          "sbert_similarity": 1.0
+        },
+        "model_returned": "deepseek-flash"
+      }
+    },
+    {
+      "sample_id": 0,
+      "question": "When did Melanie paint a sunrise?",
+      "reference": 2022,
+      "category": 2,
+      "question_index": 2,
+      "context_sha256": "0db6b520bd3063ce0b2652f815523957b54cc219d6aaa3c55fa944ff851d566b",
+      "historical": {
+        "prediction": "Last year",
+        "metrics": {
+          "exact_match": 0,
+          "f1": 0.0,
+          "rouge1_f": 0.0,
+          "rouge2_f": 0.0,
+          "rougeL_f": 0.0,
+          "bleu1": 0,
+          "bleu2": 0,
+          "bleu3": 0,
+          "bleu4": 0,
+          "bert_precision": 0.8828702569007874,
+          "bert_recall": 0.8763822317123413,
+          "bert_f1": 0.8796142935752869,
+          "meteor": 0.0,
+          "sbert_similarity": 0.36723724007606506
+        }
+      },
+      "original": {
+        "prediction": "Last year",
+        "metrics": {
+          "exact_match": 0,
+          "f1": 0.0,
+          "rouge1_f": 0.0,
+          "rouge2_f": 0.0,
+          "rougeL_f": 0.0,
+          "bleu1": 0,
+          "bleu2": 0,
+          "bleu3": 0,
+          "bleu4": 0,
+          "bert_precision": 0.8828702569007874,
+          "bert_recall": 0.8763822317123413,
+          "bert_f1": 0.8796142935752869,
+          "meteor": 0.0,
+          "sbert_similarity": 0.36723724007606506
+        },
+        "model_returned": "deepseek-flash"
+      },
+      "absolute": {
+        "prediction": "2022",
+        "metrics": {
+          "exact_match": 1,
+          "f1": 1.0,
+          "rouge1_f": 1.0,
+          "rouge2_f": 0.0,
+          "rougeL_f": 1.0,
+          "bleu1": 1.0,
+          "bleu2": 0.316227766016838,
+          "bleu3": 0.2187761623949553,
+          "bleu4": 0.1778279410038923,
+          "bert_precision": 1.0000001192092896,
+          "bert_recall": 1.0000001192092896,
+          "bert_f1": 1.0000001192092896,
+          "meteor": 0.5,
+          "sbert_similarity": 1.0000001192092896
+        },
+        "model_returned": "deepseek-flash"
+      }
+    },
+    {
+      "sample_id": 0,
+      "question": "When did Melanie run a charity race?",
+      "reference": "The sunday before 25 May 2023",
+      "category": 2,
+      "question_index": 6,
+      "context_sha256": "d7211a6e360b68f7f67e833d1cd2385fecf4dba389c5f8d3863762a63f9e0316",
+      "historical": {
+        "prediction": "Last Saturday",
+        "metrics": {
+          "exact_match": 0,
+          "f1": 0.0,
+          "rouge1_f": 0.0,
+          "rouge2_f": 0.0,
+          "rougeL_f": 0.0,
+          "bleu1": 0,
+          "bleu2": 0,
+          "bleu3": 0,
+          "bleu4": 0,
+          "bert_precision": 0.9091793894767761,
+          "bert_recall": 0.8386622071266174,
+          "bert_f1": 0.8724982738494873,
+          "meteor": 0.0,
+          "sbert_similarity": 0.4837947487831116
+        }
+      },
+      "original": {
+        "prediction": "Last Saturday",
+        "metrics": {
+          "exact_match": 0,
+          "f1": 0.0,
+          "rouge1_f": 0.0,
+          "rouge2_f": 0.0,
+          "rougeL_f": 0.0,
+          "bleu1": 0,
+          "bleu2": 0,
+          "bleu3": 0,
+          "bleu4": 0,
+          "bert_precision": 0.9091793894767761,
+          "bert_recall": 0.8386622071266174,
+          "bert_f1": 0.8724982738494873,
+          "meteor": 0.0,
+          "sbert_similarity": 0.4837947487831116
+        },
+        "model_returned": "deepseek-flash"
+      },
+      "absolute": {
+        "prediction": "25 May 2023",
+        "metrics": {
+          "exact_match": 0,
+          "f1": 0.6666666666666666,
+          "rouge1_f": 0.6666666666666666,
+          "rouge2_f": 0.5714285714285715,
+          "rougeL_f": 0.6666666666666666,
+          "bleu1": 0.36787944117144233,
+          "bleu2": 0.36787944117144233,
+          "bleu3": 0.36787944117144233,
+          "bleu4": 0.20687381245863395,
+          "bert_precision": 0.9606252312660217,
+          "bert_recall": 0.8952744603157043,
+          "bert_f1": 0.9267992973327637,
+          "meteor": 0.5165692007797271,
+          "sbert_similarity": 0.8613141775131226
+        },
+        "model_returned": "deepseek-flash"
+      }
+    },
+    {
+      "sample_id": 0,
+      "question": "When is Melanie planning on going camping?",
+      "reference": "June 2023",
+      "category": 2,
+      "question_index": 7,
+      "context_sha256": "ca110a6d6637ff50bf148fd3ff701b1b8d459edcb59f3e7beb3a281c4588db5a",
+      "historical": {
+        "prediction": "Next month",
+        "metrics": {
+          "exact_match": 0,
+          "f1": 0.0,
+          "rouge1_f": 0.0,
+          "rouge2_f": 0.0,
+          "rougeL_f": 0.0,
+          "bleu1": 0,
+          "bleu2": 0,
+          "bleu3": 0,
+          "bleu4": 0,
+          "bert_precision": 0.8716422319412231,
+          "bert_recall": 0.861862301826477,
+          "bert_f1": 0.8667247295379639,
+          "meteor": 0.0,
+          "sbert_similarity": 0.5679937601089478
+        }
+      },
+      "original": {
+        "prediction": "Next month",
+        "metrics": {
+          "exact_match": 0,
+          "f1": 0.0,
+          "rouge1_f": 0.0,
+          "rouge2_f": 0.0,
+          "rougeL_f": 0.0,
+          "bleu1": 0,
+          "bleu2": 0,
+          "bleu3": 0,
+          "bleu4": 0,
+          "bert_precision": 0.8716422319412231,
+          "bert_recall": 0.861862301826477,
+          "bert_f1": 0.8667247295379639,
+          "meteor": 0.0,
+          "sbert_similarity": 0.5679937601089478
+        },
+        "model_returned": "deepseek-flash"
+      },
+      "absolute": {
+        "prediction": "June 2023",
+        "metrics": {
+          "exact_match": 1,
+          "f1": 1.0,
+          "rouge1_f": 1.0,
+          "rouge2_f": 1.0,
+          "rougeL_f": 1.0,
+          "bleu1": 1.0,
+          "bleu2": 1.0,
+          "bleu3": 0.46773514128719823,
+          "bleu4": 0.316227766016838,
+          "bert_precision": 0.9999997019767761,
+          "bert_recall": 0.9999997019767761,
+          "bert_f1": 0.9999997019767761,
+          "meteor": 0.9375,
+          "sbert_similarity": 1.0
+        },
+        "model_returned": "deepseek-flash"
+      }
+    },
+    {
+      "sample_id": 0,
+      "question": "When did Caroline give a speech at a school?",
+      "reference": "The week before 9 June 2023",
+      "category": 2,
+      "question_index": 9,
+      "context_sha256": "4aefbe75723726bedfd74ab3947e5e0aba93e37c12c58603666a6108465f1fdb",
+      "historical": {
+        "prediction": "Not mentioned in the conversation.",
+        "metrics": {
+          "exact_match": 0,
+          "f1": 0.1818181818181818,
+          "rouge1_f": 0.1818181818181818,
+          "rouge2_f": 0.0,
+          "rougeL_f": 0.1818181818181818,
+          "bleu1": 0.16666666666666669,
+          "bleu2": 0.05773502691896258,
+          "bleu3": 0.04506819749679463,
+          "bleu4": 0.040824829046386304,
+          "bert_precision": 0.9036006927490234,
+          "bert_recall": 0.8215950131416321,
+          "bert_f1": 0.8606488704681396,
+          "meteor": 0.0847457627118644,
+          "sbert_similarity": 0.14638109505176544
+        }
+      },
+      "original": {
+        "prediction": "Not mentioned in the conversation.",
+        "metrics": {
+          "exact_match": 0,
+          "f1": 0.1818181818181818,
+          "rouge1_f": 0.1818181818181818,
+          "rouge2_f": 0.0,
+          "rougeL_f": 0.1818181818181818,
+          "bleu1": 0.16666666666666669,
+          "bleu2": 0.05773502691896258,
+          "bleu3": 0.04506819749679463,
+          "bleu4": 0.040824829046386304,
+          "bert_precision": 0.9036006927490234,
+          "bert_recall": 0.8215950131416321,
+          "bert_f1": 0.8606488704681396,
+          "meteor": 0.0847457627118644,
+          "sbert_similarity": 0.14638109505176544
+        },
+        "model_returned": "deepseek-flash"
+      },
+      "absolute": {
+        "prediction": "I don't have enough information to answer that.",
+        "metrics": {
+          "exact_match": 0,
+          "f1": 0.0,
+          "rouge1_f": 0.0,
+          "rouge2_f": 0.0,
+          "rougeL_f": 0.0,
+          "bleu1": 0,
+          "bleu2": 0,
+          "bleu3": 0,
+          "bleu4": 0,
+          "bert_precision": 0.8335087299346924,
+          "bert_recall": 0.8216589689254761,
+          "bert_f1": 0.8275414705276489,
+          "meteor": 0.0,
+          "sbert_similarity": -0.013410849496722221
+        },
+        "model_returned": "deepseek-flash"
+      }
+    },
+    {
+      "sample_id": 0,
+      "question": "When did Caroline meet up with her friends, family, and mentors?",
+      "reference": "The week before 9 June 2023",
+      "category": 2,
+      "question_index": 10,
+      "context_sha256": "3905089c36dc43aa051bac909d2746bedd785594bbb0ac576d2c76afc3b6866f",
+      "historical": {
+        "prediction": "Last week",
+        "metrics": {
+          "exact_match": 0,
+          "f1": 0.25,
+          "rouge1_f": 0.25,
+          "rouge2_f": 0.0,
+          "rougeL_f": 0.25,
+          "bleu1": 0.06766764161830635,
+          "bleu2": 0.030261889307125377,
+          "bleu3": 0.02355435073584915,
+          "bleu4": 0.020237345084409754,
+          "bert_precision": 0.8895328044891357,
+          "bert_recall": 0.8208845853805542,
+          "bert_f1": 0.8538310527801514,
+          "meteor": 0.08928571428571427,
+          "sbert_similarity": 0.5041570663452148
+        }
+      },
+      "original": {
+        "prediction": "Last week",
+        "metrics": {
+          "exact_match": 0,
+          "f1": 0.25,
+          "rouge1_f": 0.25,
+          "rouge2_f": 0.0,
+          "rougeL_f": 0.25,
+          "bleu1": 0.06766764161830635,
+          "bleu2": 0.030261889307125377,
+          "bleu3": 0.02355435073584915,
+          "bleu4": 0.020237345084409754,
+          "bert_precision": 0.8895328044891357,
+          "bert_recall": 0.8208845853805542,
+          "bert_f1": 0.8538310527801514,
+          "meteor": 0.08928571428571427,
+          "sbert_similarity": 0.5041570663452148
+        },
+        "model_returned": "deepseek-flash"
+      },
+      "absolute": {
+        "prediction": "9 June 2023",
+        "metrics": {
+          "exact_match": 0,
+          "f1": 0.6666666666666666,
+          "rouge1_f": 0.6666666666666666,
+          "rouge2_f": 0.5714285714285715,
+          "rougeL_f": 0.6666666666666666,
+          "bleu1": 0.36787944117144233,
+          "bleu2": 0.36787944117144233,
+          "bleu3": 0.36787944117144233,
+          "bleu4": 0.20687381245863395,
+          "bert_precision": 0.9499203562736511,
+          "bert_recall": 0.9049323201179504,
+          "bert_f1": 0.9268807768821716,
+          "meteor": 0.5165692007797271,
+          "sbert_similarity": 0.8633455634117126
+        },
+        "model_returned": "deepseek-flash"
+      }
+    },
+    {
+      "sample_id": 0,
+      "question": "How long has Caroline had her current group of friends for?",
+      "reference": "4 years",
+      "category": 2,
+      "question_index": 11,
+      "context_sha256": "9d71d385d74222d0977bcbfe1eeaa4c95b13e7a27bf12d0df570f3c9123f202f",
+      "historical": {
+        "prediction": "Since last time",
+        "metrics": {
+          "exact_match": 0,
+          "f1": 0.0,
+          "rouge1_f": 0.0,
+          "rouge2_f": 0.0,
+          "rougeL_f": 0.0,
+          "bleu1": 0,
+          "bleu2": 0,
+          "bleu3": 0,
+          "bleu4": 0,
+          "bert_precision": 0.8788372278213501,
+          "bert_recall": 0.8991514444351196,
+          "bert_f1": 0.8888782858848572,
+          "meteor": 0.0,
+          "sbert_similarity": 0.45178675651550293
+        }
+      },
+      "original": {
+        "prediction": "Since 8 May 2023",
+        "metrics": {
+          "exact_match": 0,
+          "f1": 0.0,
+          "rouge1_f": 0.0,
+          "rouge2_f": 0.0,
+          "rougeL_f": 0.0,
+          "bleu1": 0,
+          "bleu2": 0,
+          "bleu3": 0,
+          "bleu4": 0,
+          "bert_precision": 0.824934184551239,
+          "bert_recall": 0.8765397667884827,
+          "bert_f1": 0.84995436668396,
+          "meteor": 0.0,
+          "sbert_similarity": 0.36269181966781616
+        },
+        "model_returned": "deepseek-flash"
+      },
+      "absolute": {
+        "prediction": "Long time",
+        "metrics": {
+          "exact_match": 0,
+          "f1": 0.0,
+          "rouge1_f": 0.0,
+          "rouge2_f": 0.0,
+          "rougeL_f": 0.0,
+          "bleu1": 0,
+          "bleu2": 0,
+          "bleu3": 0,
+          "bleu4": 0,
+          "bert_precision": 0.9240859746932983,
+          "bert_recall": 0.9240859746932983,
+          "bert_f1": 0.9240859746932983,
+          "meteor": 0.0,
+          "sbert_similarity": 0.5951728224754333
+        },
+        "model_returned": "deepseek-flash"
+      }
+    },
+    {
+      "sample_id": 0,
+      "question": "How long ago was Caroline's 18th birthday?",
+      "reference": "10 years ago",
+      "category": 2,
+      "question_index": 13,
+      "context_sha256": "38735acc3e367659d3171e67e64577daca2cbd4abf8cbcce2751e75b07f4be0f",
+      "historical": {
+        "prediction": "Ten years ago",
+        "metrics": {
+          "exact_match": 0,
+          "f1": 0.6666666666666666,
+          "rouge1_f": 0.6666666666666666,
+          "rouge2_f": 0.5,
+          "rougeL_f": 0.6666666666666666,
+          "bleu1": 0.6666666666666666,
+          "bleu2": 0.5773502691896257,
+          "bleu3": 0.3254992452916931,
+          "bleu4": 0.24028114141347542,
+          "bert_precision": 0.9494138956069946,
+          "bert_recall": 0.9494138956069946,
+          "bert_f1": 0.9494138956069946,
+          "meteor": 0.9814814814814815,
+          "sbert_similarity": 0.9706802368164062
+        }
+      },
+      "original": {
+        "prediction": "Ten years ago",
+        "metrics": {
+          "exact_match": 0,
+          "f1": 0.6666666666666666,
+          "rouge1_f": 0.6666666666666666,
+          "rouge2_f": 0.5,
+          "rougeL_f": 0.6666666666666666,
+          "bleu1": 0.6666666666666666,
+          "bleu2": 0.5773502691896257,
+          "bleu3": 0.3254992452916931,
+          "bleu4": 0.24028114141347542,
+          "bert_precision": 0.9494138956069946,
+          "bert_recall": 0.9494138956069946,
+          "bert_f1": 0.9494138956069946,
+          "meteor": 0.9814814814814815,
+          "sbert_similarity": 0.9706802368164062
+        },
+        "model_returned": "deepseek-flash"
+      },
+      "absolute": {
+        "prediction": "Ten years ago",
+        "metrics": {
+          "exact_match": 0,
+          "f1": 0.6666666666666666,
+          "rouge1_f": 0.6666666666666666,
+          "rouge2_f": 0.5,
+          "rougeL_f": 0.6666666666666666,
+          "bleu1": 0.6666666666666666,
+          "bleu2": 0.5773502691896257,
+          "bleu3": 0.3254992452916931,
+          "bleu4": 0.24028114141347542,
+          "bert_precision": 0.9494138956069946,
+          "bert_recall": 0.9494138956069946,
+          "bert_f1": 0.9494138956069946,
+          "meteor": 0.9814814814814815,
+          "sbert_similarity": 0.9706802368164062
+        },
+        "model_returned": "deepseek-flash"
+      }
+    },
+    {
+      "sample_id": 0,
+      "question": "When did Melanie sign up for a pottery class?",
+      "reference": "2 July 2023",
+      "category": 2,
+      "question_index": 17,
+      "context_sha256": "e871affd3b9b6a7537323ec8e888a9980d5ecc8d425dc7204dd83a44af639ff3",
+      "historical": {
+        "prediction": "Yesterday (3 July, 2023)",
+        "metrics": {
+          "exact_match": 0,
+          "f1": 0.28571428571428575,
+          "rouge1_f": 0.5714285714285715,
+          "rouge2_f": 0.4,
+          "rougeL_f": 0.5714285714285715,
+          "bleu1": 0.2857142857142857,
+          "bleu2": 0.06900655593423542,
+          "bleu3": 0.047098549390932394,
+          "bleu4": 0.039281465090051315,
+          "bert_precision": 0.9124369621276855,
+          "bert_recall": 0.9230369925498962,
+          "bert_f1": 0.9177063703536987,
+          "meteor": 0.0,
+          "sbert_similarity": 0.8081349730491638
+        }
+      },
+      "original": {
+        "prediction": "Yesterday (3 July, 2023)",
+        "metrics": {
+          "exact_match": 0,
+          "f1": 0.28571428571428575,
+          "rouge1_f": 0.5714285714285715,
+          "rouge2_f": 0.4,
+          "rougeL_f": 0.5714285714285715,
+          "bleu1": 0.2857142857142857,
+          "bleu2": 0.06900655593423542,
+          "bleu3": 0.047098549390932394,
+          "bleu4": 0.039281465090051315,
+          "bert_precision": 0.9124369621276855,
+          "bert_recall": 0.9230369925498962,
+          "bert_f1": 0.9177063703536987,
+          "meteor": 0.0,
+          "sbert_similarity": 0.8081349730491638
+        },
+        "model_returned": "deepseek-flash"
+      },
+      "absolute": {
+        "prediction": "2 July 2023",
+        "metrics": {
+          "exact_match": 1,
+          "f1": 1.0,
+          "rouge1_f": 1.0,
+          "rouge2_f": 1.0,
+          "rougeL_f": 1.0,
+          "bleu1": 1.0,
+          "bleu2": 1.0,
+          "bleu3": 1.0,
+          "bleu4": 0.5623413251903491,
+          "bert_precision": 1.0,
+          "bert_recall": 1.0,
+          "bert_f1": 1.0,
+          "meteor": 0.9814814814814815,
+          "sbert_similarity": 1.0
+        },
+        "model_returned": "deepseek-flash"
+      }
+    },
+    {
+      "sample_id": 0,
+      "question": "When is Caroline going to the transgender conference?",
+      "reference": "July 2023",
+      "category": 2,
+      "question_index": 18,
+      "context_sha256": "dc5bd59022d77277a055a71a5055b63474824c39311b175031b6c92f407873ca",
+      "historical": {
+        "prediction": "This month",
+        "metrics": {
+          "exact_match": 0,
+          "f1": 0.0,
+          "rouge1_f": 0.0,
+          "rouge2_f": 0.0,
+          "rougeL_f": 0.0,
+          "bleu1": 0,
+          "bleu2": 0,
+          "bleu3": 0,
+          "bleu4": 0,
+          "bert_precision": 0.8660568594932556,
+          "bert_recall": 0.8560445308685303,
+          "bert_f1": 0.8610215783119202,
+          "meteor": 0.0,
+          "sbert_similarity": 0.48674148321151733
+        }
+      },
+      "original": {
+        "prediction": "This month",
+        "metrics": {
+          "exact_match": 0,
+          "f1": 0.0,
+          "rouge1_f": 0.0,
+          "rouge2_f": 0.0,
+          "rougeL_f": 0.0,
+          "bleu1": 0,
+          "bleu2": 0,
+          "bleu3": 0,
+          "bleu4": 0,
+          "bert_precision": 0.8660568594932556,
+          "bert_recall": 0.8560445308685303,
+          "bert_f1": 0.8610215783119202,
+          "meteor": 0.0,
+          "sbert_similarity": 0.48674148321151733
+        },
+        "model_returned": "deepseek-flash"
+      },
+      "absolute": {
+        "prediction": "July 2023",
+        "metrics": {
+          "exact_match": 1,
+          "f1": 1.0,
+          "rouge1_f": 1.0,
+          "rouge2_f": 1.0,
+          "rougeL_f": 1.0,
+          "bleu1": 1.0,
+          "bleu2": 1.0,
+          "bleu3": 0.46773514128719823,
+          "bleu4": 0.316227766016838,
+          "bert_precision": 0.9999997615814209,
+          "bert_recall": 0.9999997615814209,
+          "bert_f1": 0.9999997615814209,
+          "meteor": 0.9375,
+          "sbert_similarity": 1.0000001192092896
+        },
+        "model_returned": "deepseek-flash"
+      }
+    },
+    {
+      "sample_id": 0,
+      "question": "When did Melanie go to the museum?",
+      "reference": "5 July 2023",
+      "category": 2,
+      "question_index": 21,
+      "context_sha256": "684df533f4fc3146897c4b72b40aced2158d743efd192eef8096af600c1243b9",
+      "historical": {
+        "prediction": "Yesterday",
+        "metrics": {
+          "exact_match": 0,
+          "f1": 0.0,
+          "rouge1_f": 0.0,
+          "rouge2_f": 0.0,
+          "rougeL_f": 0.0,
+          "bleu1": 0,
+          "bleu2": 0,
+          "bleu3": 0,
+          "bleu4": 0,
+          "bert_precision": 0.8706590533256531,
+          "bert_recall": 0.8335176706314087,
+          "bert_f1": 0.8516836166381836,
+          "meteor": 0.0,
+          "sbert_similarity": 0.35495808720588684
+        }
+      },
+      "original": {
+        "prediction": "Yesterday",
+        "metrics": {
+          "exact_match": 0,
+          "f1": 0.0,
+          "rouge1_f": 0.0,
+          "rouge2_f": 0.0,
+          "rougeL_f": 0.0,
+          "bleu1": 0,
+          "bleu2": 0,
+          "bleu3": 0,
+          "bleu4": 0,
+          "bert_precision": 0.8706590533256531,
+          "bert_recall": 0.8335176706314087,
+          "bert_f1": 0.8516836166381836,
+          "meteor": 0.0,
+          "sbert_similarity": 0.35495808720588684
+        },
+        "model_returned": "deepseek-flash"
+      },
+      "absolute": {
+        "prediction": "Yesterday",
+        "metrics": {
+          "exact_match": 0,
+          "f1": 0.0,
+          "rouge1_f": 0.0,
+          "rouge2_f": 0.0,
+          "rougeL_f": 0.0,
+          "bleu1": 0,
+          "bleu2": 0,
+          "bleu3": 0,
+          "bleu4": 0,
+          "bert_precision": 0.8706590533256531,
+          "bert_recall": 0.8335176706314087,
+          "bert_f1": 0.8516836166381836,
+          "meteor": 0.0,
+          "sbert_similarity": 0.35495808720588684
+        },
+        "model_returned": "deepseek-flash"
+      }
+    },
+    {
+      "sample_id": 0,
+      "question": "When did Caroline have a picnic?",
+      "reference": "The week before 6 July 2023",
+      "category": 2,
+      "question_index": 22,
+      "context_sha256": "4810f6236b199efe718de79a5de6ac02ace271bf58308a8df8eb2b57f203fd40",
+      "historical": {
+        "prediction": "9 June, 2023",
+        "metrics": {
+          "exact_match": 0,
+          "f1": 0.2222222222222222,
+          "rouge1_f": 0.2222222222222222,
+          "rouge2_f": 0.0,
+          "rougeL_f": 0.2222222222222222,
+          "bleu1": 0.15163266492815836,
+          "bleu2": 0.05536842069051654,
+          "bleu3": 0.04649251600872798,
+          "bleu4": 0.04873039689743777,
+          "bert_precision": 0.9370002746582031,
+          "bert_recall": 0.8875721096992493,
+          "bert_f1": 0.9116167426109314,
+          "meteor": 0.08771929824561403,
+          "sbert_similarity": 0.8064593076705933
+        }
+      },
+      "original": {
+        "prediction": "9 June, 2023",
+        "metrics": {
+          "exact_match": 0,
+          "f1": 0.2222222222222222,
+          "rouge1_f": 0.2222222222222222,
+          "rouge2_f": 0.0,
+          "rougeL_f": 0.2222222222222222,
+          "bleu1": 0.15163266492815836,
+          "bleu2": 0.05536842069051654,
+          "bleu3": 0.04649251600872798,
+          "bleu4": 0.04873039689743777,
+          "bert_precision": 0.9370002746582031,
+          "bert_recall": 0.8875721096992493,
+          "bert_f1": 0.9116167426109314,
+          "meteor": 0.08771929824561403,
+          "sbert_similarity": 0.8064593076705933
+        },
+        "model_returned": "deepseek-flash"
+      },
+      "absolute": {
+        "prediction": "9 June 2023",
+        "metrics": {
+          "exact_match": 0,
+          "f1": 0.2222222222222222,
+          "rouge1_f": 0.2222222222222222,
+          "rouge2_f": 0.0,
+          "rougeL_f": 0.2222222222222222,
+          "bleu1": 0.12262648039048077,
+          "bleu2": 0.04749303163563625,
+          "bleu3": 0.044556965439969995,
+          "bleu4": 0.0417991745584234,
+          "bert_precision": 0.933499276638031,
+          "bert_recall": 0.8973100781440735,
+          "bert_f1": 0.9150469899177551,
+          "meteor": 0.08771929824561403,
+          "sbert_similarity": 0.8117187023162842
+        },
+        "model_returned": "deepseek-flash"
+      }
+    },
+    {
+      "sample_id": 0,
+      "question": "When did Caroline go to the LGBTQ conference?",
+      "reference": "10 July 2023",
+      "category": 2,
+      "question_index": 26,
+      "context_sha256": "818b3a8c8fa270e36b47e3e14e7de96ff956e520178f168562d5d6745af12300",
+      "historical": {
+        "prediction": "Two days before 12 July, 2023 (around 10 July, 2023)",
+        "metrics": {
+          "exact_match": 0,
+          "f1": 0.5,
+          "rouge1_f": 0.4615384615384615,
+          "rouge2_f": 0.3636363636363636,
+          "rougeL_f": 0.4615384615384615,
+          "bleu1": 0.21428571428571425,
+          "bleu2": 0.12838814775327384,
+          "bleu3": 0.053149189341188084,
+          "bleu4": 0.03342866121562732,
+          "bert_precision": 0.875948965549469,
+          "bert_recall": 0.9260196089744568,
+          "bert_f1": 0.9002886414527893,
+          "meteor": 0.2702702702702703,
+          "sbert_similarity": 0.7434344291687012
+        }
+      },
+      "original": {
+        "prediction": "Two days ago (10 July, 2023)",
+        "metrics": {
+          "exact_match": 0,
+          "f1": 0.2222222222222222,
+          "rouge1_f": 0.6666666666666666,
+          "rouge2_f": 0.5714285714285715,
+          "rougeL_f": 0.6666666666666666,
+          "bleu1": 0.3333333333333333,
+          "bleu2": 0.20412414523193154,
+          "bleu3": 0.08622792534209153,
+          "bleu4": 0.056122223243057295,
+          "bert_precision": 0.8871204853057861,
+          "bert_recall": 0.9219696521759033,
+          "bert_f1": 0.9042093753814697,
+          "meteor": 0.0,
+          "sbert_similarity": 0.7848808765411377
+        },
+        "model_returned": "deepseek-flash"
+      },
+      "absolute": {
+        "prediction": "10 July 2023",
+        "metrics": {
+          "exact_match": 1,
+          "f1": 1.0,
+          "rouge1_f": 1.0,
+          "rouge2_f": 1.0,
+          "rougeL_f": 1.0,
+          "bleu1": 1.0,
+          "bleu2": 1.0,
+          "bleu3": 1.0,
+          "bleu4": 0.5623413251903491,
+          "bert_precision": 0.9999997615814209,
+          "bert_recall": 0.9999997615814209,
+          "bert_f1": 0.9999997615814209,
+          "meteor": 0.9814814814814815,
+          "sbert_similarity": 1.0000001192092896
+        },
+        "model_returned": "deepseek-flash"
+      }
+    },
+    {
+      "sample_id": 0,
+      "question": "When did Melanie read the book \"nothing is impossible\"?",
+      "reference": 2022,
+      "category": 2,
+      "question_index": 27,
+      "context_sha256": "6cf22ac60fe4b7746cf13fa9aad19c759d201ab85ed6ca786b359ac0b51fdf0f",
+      "historical": {
+        "prediction": "Last year",
+        "metrics": {
+          "exact_match": 0,
+          "f1": 0.0,
+          "rouge1_f": 0.0,
+          "rouge2_f": 0.0,
+          "rougeL_f": 0.0,
+          "bleu1": 0,
+          "bleu2": 0,
+          "bleu3": 0,
+          "bleu4": 0,
+          "bert_precision": 0.8828702569007874,
+          "bert_recall": 0.8763822317123413,
+          "bert_f1": 0.8796142935752869,
+          "meteor": 0.0,
+          "sbert_similarity": 0.36723724007606506
+        }
+      },
+      "original": {
+        "prediction": "Last year",
+        "metrics": {
+          "exact_match": 0,
+          "f1": 0.0,
+          "rouge1_f": 0.0,
+          "rouge2_f": 0.0,
+          "rougeL_f": 0.0,
+          "bleu1": 0,
+          "bleu2": 0,
+          "bleu3": 0,
+          "bleu4": 0,
+          "bert_precision": 0.8828702569007874,
+          "bert_recall": 0.8763822317123413,
+          "bert_f1": 0.8796142935752869,
+          "meteor": 0.0,
+          "sbert_similarity": 0.36723724007606506
+        },
+        "model_returned": "deepseek-flash"
+      },
+      "absolute": {
+        "prediction": "2022",
+        "metrics": {
+          "exact_match": 1,
+          "f1": 1.0,
+          "rouge1_f": 1.0,
+          "rouge2_f": 0.0,
+          "rougeL_f": 1.0,
+          "bleu1": 1.0,
+          "bleu2": 0.316227766016838,
+          "bleu3": 0.2187761623949553,
+          "bleu4": 0.1778279410038923,
+          "bert_precision": 1.0000001192092896,
+          "bert_recall": 1.0000001192092896,
+          "bert_f1": 1.0000001192092896,
+          "meteor": 0.5,
+          "sbert_similarity": 1.0000001192092896
+        },
+        "model_returned": "deepseek-flash"
+      }
+    },
+    {
+      "sample_id": 0,
+      "question": "When did Caroline go to the adoption meeting?",
+      "reference": "The friday before 15 July 2023",
+      "category": 2,
+      "question_index": 29,
+      "context_sha256": "f3abfcaad11fd9e91ac0ce51b397c4ac8c36413284f6a2b4731a8537b1ff92ac",
+      "historical": {
+        "prediction": "Last Friday",
+        "metrics": {
+          "exact_match": 0,
+          "f1": 0.25,
+          "rouge1_f": 0.25,
+          "rouge2_f": 0.0,
+          "rougeL_f": 0.25,
+          "bleu1": 0.06766764161830635,
+          "bleu2": 0.030261889307125377,
+          "bleu3": 0.02355435073584915,
+          "bleu4": 0.020237345084409754,
+          "bert_precision": 0.9186443090438843,
+          "bert_recall": 0.8458033204078674,
+          "bert_f1": 0.8807201981544495,
+          "meteor": 0.08928571428571427,
+          "sbert_similarity": 0.5948778390884399
+        }
+      },
+      "original": {
+        "prediction": "15 July, 2023",
+        "metrics": {
+          "exact_match": 0,
+          "f1": 0.6666666666666666,
+          "rouge1_f": 0.6666666666666666,
+          "rouge2_f": 0.5714285714285715,
+          "rougeL_f": 0.6666666666666666,
+          "bleu1": 0.45489799478447507,
+          "bleu2": 0.30326532985631666,
+          "bleu3": 0.14283448174223617,
+          "bleu4": 0.11404605374835301,
+          "bert_precision": 0.9468581080436707,
+          "bert_recall": 0.9002334475517273,
+          "bert_f1": 0.9229573011398315,
+          "meteor": 0.17543859649122806,
+          "sbert_similarity": 0.7955405712127686
+        },
+        "model_returned": "deepseek-flash"
+      },
+      "absolute": {
+        "prediction": "15 July 2023",
+        "metrics": {
+          "exact_match": 0,
+          "f1": 0.6666666666666666,
+          "rouge1_f": 0.6666666666666666,
+          "rouge2_f": 0.5714285714285715,
+          "rougeL_f": 0.6666666666666666,
+          "bleu1": 0.36787944117144233,
+          "bleu2": 0.36787944117144233,
+          "bleu3": 0.36787944117144233,
+          "bleu4": 0.20687381245863395,
+          "bert_precision": 0.9558849930763245,
+          "bert_recall": 0.8992692232131958,
+          "bert_f1": 0.926713228225708,
+          "meteor": 0.5165692007797271,
+          "sbert_similarity": 0.8067606091499329
+        },
+        "model_returned": "deepseek-flash"
+      }
+    },
+    {
+      "sample_id": 0,
+      "question": "When did Melanie go to the pottery workshop?",
+      "reference": "The Friday before 15 July 2023",
+      "category": 2,
+      "question_index": 30,
+      "context_sha256": "fbe60a46bdfebe7157494b353a3bceff5f4ef7192ebc37586d9eec981ddc77ee",
+      "historical": {
+        "prediction": "Last Fri",
+        "metrics": {
+          "exact_match": 0,
+          "f1": 0.0,
+          "rouge1_f": 0.0,
+          "rouge2_f": 0.0,
+          "rougeL_f": 0.0,
+          "bleu1": 0,
+          "bleu2": 0,
+          "bleu3": 0,
+          "bleu4": 0,
+          "bert_precision": 0.8802658915519714,
+          "bert_recall": 0.8157234787940979,
+          "bert_f1": 0.8467665910720825,
+          "meteor": 0.0,
+          "sbert_similarity": 0.3522157073020935
+        }
+      },
+      "original": {
+        "prediction": "Last Fri",
+        "metrics": {
+          "exact_match": 0,
+          "f1": 0.0,
+          "rouge1_f": 0.0,
+          "rouge2_f": 0.0,
+          "rougeL_f": 0.0,
+          "bleu1": 0,
+          "bleu2": 0,
+          "bleu3": 0,
+          "bleu4": 0,
+          "bert_precision": 0.8802658915519714,
+          "bert_recall": 0.8157234787940979,
+          "bert_f1": 0.8467665910720825,
+          "meteor": 0.0,
+          "sbert_similarity": 0.3522157073020935
+        },
+        "model_returned": "deepseek-flash"
+      },
+      "absolute": {
+        "prediction": "14 July 2023",
+        "metrics": {
+          "exact_match": 0,
+          "f1": 0.4444444444444444,
+          "rouge1_f": 0.4444444444444444,
+          "rouge2_f": 0.28571428571428575,
+          "rougeL_f": 0.4444444444444444,
+          "bleu1": 0.24525296078096154,
+          "bleu2": 0.21239529438966132,
+          "bleu3": 0.11974448045963429,
+          "bleu4": 0.08839449202722564,
+          "bert_precision": 0.9480973482131958,
+          "bert_recall": 0.9015040993690491,
+          "bert_f1": 0.9242138266563416,
+          "meteor": 0.3289473684210526,
+          "sbert_similarity": 0.7633202075958252
+        },
+        "model_returned": "deepseek-flash"
+      }
+    },
+    {
+      "sample_id": 0,
+      "question": "When did Melanie go camping in June?",
+      "reference": "The week before 27 June 2023",
+      "category": 2,
+      "question_index": 32,
+      "context_sha256": "929334d61879b3675dae8686632c3a0cdfb5e006087a5586b796284b514bcbf5",
+      "historical": {
+        "prediction": "27 June, 2023",
+        "metrics": {
+          "exact_match": 0,
+          "f1": 0.6666666666666666,
+          "rouge1_f": 0.6666666666666666,
+          "rouge2_f": 0.5714285714285715,
+          "rougeL_f": 0.6666666666666666,
+          "bleu1": 0.45489799478447507,
+          "bleu2": 0.30326532985631666,
+          "bleu3": 0.14283448174223617,
+          "bleu4": 0.11404605374835301,
+          "bert_precision": 0.9405204057693481,
+          "bert_recall": 0.9120432734489441,
+          "bert_f1": 0.9260630011558533,
+          "meteor": 0.17543859649122806,
+          "sbert_similarity": 0.832425594329834
+        }
+      },
+      "original": {
+        "prediction": "27 June, 2023",
+        "metrics": {
+          "exact_match": 0,
+          "f1": 0.6666666666666666,
+          "rouge1_f": 0.6666666666666666,
+          "rouge2_f": 0.5714285714285715,
+          "rougeL_f": 0.6666666666666666,
+          "bleu1": 0.45489799478447507,
+          "bleu2": 0.30326532985631666,
+          "bleu3": 0.14283448174223617,
+          "bleu4": 0.11404605374835301,
+          "bert_precision": 0.9405204057693481,
+          "bert_recall": 0.9120432734489441,
+          "bert_f1": 0.9260630011558533,
+          "meteor": 0.17543859649122806,
+          "sbert_similarity": 0.832425594329834
+        },
+        "model_returned": "deepseek-flash"
+      },
+      "absolute": {
+        "prediction": "27 June 2023",
+        "metrics": {
+          "exact_match": 0,
+          "f1": 0.6666666666666666,
+          "rouge1_f": 0.6666666666666666,
+          "rouge2_f": 0.5714285714285715,
+          "rougeL_f": 0.6666666666666666,
+          "bleu1": 0.36787944117144233,
+          "bleu2": 0.36787944117144233,
+          "bleu3": 0.36787944117144233,
+          "bleu4": 0.20687381245863395,
+          "bert_precision": 0.9508340954780579,
+          "bert_recall": 0.9102509021759033,
+          "bert_f1": 0.9301000237464905,
+          "meteor": 0.5165692007797271,
+          "sbert_similarity": 0.8402237892150879
+        },
+        "model_returned": "deepseek-flash"
+      }
+    },
+    {
+      "sample_id": 0,
+      "question": "When did Caroline go to a pride parade during the summer?",
+      "reference": "The week before 3 July 2023",
+      "category": 2,
+      "question_index": 34,
+      "context_sha256": "ff6e9a61e788218b8bad4c44fef3c0b85428486fb4cc6b4d566551d8adaf0bcf",
+      "historical": {
+        "prediction": "Last Friday",
+        "metrics": {
+          "exact_match": 0,
+          "f1": 0.0,
+          "rouge1_f": 0.0,
+          "rouge2_f": 0.0,
+          "rougeL_f": 0.0,
+          "bleu1": 0,
+          "bleu2": 0,
+          "bleu3": 0,
+          "bleu4": 0,
+          "bert_precision": 0.9149589538574219,
+          "bert_recall": 0.8538509011268616,
+          "bert_f1": 0.8833494186401367,
+          "meteor": 0.0,
+          "sbert_similarity": 0.45862340927124023
+        }
+      },
+      "original": {
+        "prediction": "Last Friday",
+        "metrics": {
+          "exact_match": 0,
+          "f1": 0.0,
+          "rouge1_f": 0.0,
+          "rouge2_f": 0.0,
+          "rougeL_f": 0.0,
+          "bleu1": 0,
+          "bleu2": 0,
+          "bleu3": 0,
+          "bleu4": 0,
+          "bert_precision": 0.9149589538574219,
+          "bert_recall": 0.8538509011268616,
+          "bert_f1": 0.8833494186401367,
+          "meteor": 0.0,
+          "sbert_similarity": 0.45862340927124023
+        },
+        "model_returned": "deepseek-flash"
+      },
+      "absolute": {
+        "prediction": "July 2023",
+        "metrics": {
+          "exact_match": 0,
+          "f1": 0.5,
+          "rouge1_f": 0.5,
+          "rouge2_f": 0.33333333333333337,
+          "rougeL_f": 0.5,
+          "bleu1": 0.1353352832366127,
+          "bleu2": 0.1353352832366127,
+          "bleu3": 0.06330106782582003,
+          "bleu4": 0.04279677428117006,
+          "bert_precision": 0.9326561689376831,
+          "bert_recall": 0.8854856491088867,
+          "bert_f1": 0.9084590077400208,
+          "meteor": 0.33482142857142855,
+          "sbert_similarity": 0.7879713177680969
+        },
+        "model_returned": "deepseek-flash"
+      }
+    },
+    {
+      "sample_id": 0,
+      "question": "When did Melanie go camping in July?",
+      "reference": "two weekends before 17 July 2023",
+      "category": 2,
+      "question_index": 36,
+      "context_sha256": "3fffcbe11309d2b02ee516bc5c51891ed7c2b0df2a42542174396bcd47301c88",
+      "historical": {
+        "prediction": "Two weekends ago",
+        "metrics": {
+          "exact_match": 0,
+          "f1": 0.4444444444444444,
+          "rouge1_f": 0.4444444444444444,
+          "rouge2_f": 0.28571428571428575,
+          "rougeL_f": 0.4444444444444444,
+          "bleu1": 0.24525296078096154,
+          "bleu2": 0.21239529438966132,
+          "bleu3": 0.11974448045963429,
+          "bleu4": 0.08839449202722564,
+          "bert_precision": 0.8693761229515076,
+          "bert_recall": 0.8227654695510864,
+          "bert_f1": 0.8454288244247437,
+          "meteor": 0.3289473684210526,
+          "sbert_similarity": 0.5797646045684814
+        }
+      },
+      "original": {
+        "prediction": "Two weekends ago",
+        "metrics": {
+          "exact_match": 0,
+          "f1": 0.4444444444444444,
+          "rouge1_f": 0.4444444444444444,
+          "rouge2_f": 0.28571428571428575,
+          "rougeL_f": 0.4444444444444444,
+          "bleu1": 0.24525296078096154,
+          "bleu2": 0.21239529438966132,
+          "bleu3": 0.11974448045963429,
+          "bleu4": 0.08839449202722564,
+          "bert_precision": 0.8693761229515076,
+          "bert_recall": 0.8227654695510864,
+          "bert_f1": 0.8454288244247437,
+          "meteor": 0.3289473684210526,
+          "sbert_similarity": 0.5797646045684814
+        },
+        "model_returned": "deepseek-flash"
+      },
+      "absolute": {
+        "prediction": "15 July 2023",
+        "metrics": {
+          "exact_match": 0,
+          "f1": 0.4444444444444444,
+          "rouge1_f": 0.4444444444444444,
+          "rouge2_f": 0.28571428571428575,
+          "rougeL_f": 0.4444444444444444,
+          "bleu1": 0.24525296078096154,
+          "bleu2": 0.21239529438966132,
+          "bleu3": 0.11974448045963429,
+          "bleu4": 0.08839449202722564,
+          "bert_precision": 0.9517654180526733,
+          "bert_recall": 0.8949416279792786,
+          "bert_f1": 0.9224792718887329,
+          "meteor": 0.3289473684210526,
+          "sbert_similarity": 0.6522899270057678
+        },
+        "model_returned": "deepseek-flash"
+      }
+    },
+    {
+      "sample_id": 0,
+      "question": "When did Caroline join a mentorship program?",
+      "reference": "The weekend before 17 July 2023",
+      "category": 2,
+      "question_index": 37,
+      "context_sha256": "a4a2632df4efdf7a5635f35bcc56cbd8dad37ad1640bd971bc57fabdcf9e7510",
+      "historical": {
+        "prediction": "Last weekend",
+        "metrics": {
+          "exact_match": 0,
+          "f1": 0.25,
+          "rouge1_f": 0.25,
+          "rouge2_f": 0.0,
+          "rougeL_f": 0.25,
+          "bleu1": 0.06766764161830635,
+          "bleu2": 0.030261889307125377,
+          "bleu3": 0.02355435073584915,
+          "bleu4": 0.020237345084409754,
+          "bert_precision": 0.9243099689483643,
+          "bert_recall": 0.8365880250930786,
+          "bert_f1": 0.8782640099525452,
+          "meteor": 0.08928571428571427,
+          "sbert_similarity": 0.610760509967804
+        }
+      },
+      "original": {
+        "prediction": "Last weekend",
+        "metrics": {
+          "exact_match": 0,
+          "f1": 0.25,
+          "rouge1_f": 0.25,
+          "rouge2_f": 0.0,
+          "rougeL_f": 0.25,
+          "bleu1": 0.06766764161830635,
+          "bleu2": 0.030261889307125377,
+          "bleu3": 0.02355435073584915,
+          "bleu4": 0.020237345084409754,
+          "bert_precision": 0.9243099689483643,
+          "bert_recall": 0.8365880250930786,
+          "bert_f1": 0.8782640099525452,
+          "meteor": 0.08928571428571427,
+          "sbert_similarity": 0.610760509967804
+        },
+        "model_returned": "deepseek-flash"
+      },
+      "absolute": {
+        "prediction": "17 July 2023",
+        "metrics": {
+          "exact_match": 0,
+          "f1": 0.6666666666666666,
+          "rouge1_f": 0.6666666666666666,
+          "rouge2_f": 0.5714285714285715,
+          "rougeL_f": 0.6666666666666666,
+          "bleu1": 0.36787944117144233,
+          "bleu2": 0.36787944117144233,
+          "bleu3": 0.36787944117144233,
+          "bleu4": 0.20687381245863395,
+          "bert_precision": 0.9493207335472107,
+          "bert_recall": 0.905101478099823,
+          "bert_f1": 0.9266839027404785,
+          "meteor": 0.5165692007797271,
+          "sbert_similarity": 0.7773945331573486
+        },
+        "model_returned": "deepseek-flash"
+      }
+    },
+    {
+      "sample_id": 0,
+      "question": "When did Caroline join a new activist group?",
+      "reference": "The Tuesday before 20 July 2023",
+      "category": 2,
+      "question_index": 42,
+      "context_sha256": "5abed4d98888b15d3318b31398ac19fb1aaeada8bd9faa6326f09afc914f79c1",
+      "historical": {
+        "prediction": "Last Tues",
+        "metrics": {
+          "exact_match": 0,
+          "f1": 0.0,
+          "rouge1_f": 0.0,
+          "rouge2_f": 0.0,
+          "rougeL_f": 0.0,
+          "bleu1": 0,
+          "bleu2": 0,
+          "bleu3": 0,
+          "bleu4": 0,
+          "bert_precision": 0.8437628746032715,
+          "bert_recall": 0.787422776222229,
+          "bert_f1": 0.8146198987960815,
+          "meteor": 0.0,
+          "sbert_similarity": 0.2103949934244156
+        }
+      },
+      "original": {
+        "prediction": "Last Tues",
+        "metrics": {
+          "exact_match": 0,
+          "f1": 0.0,
+          "rouge1_f": 0.0,
+          "rouge2_f": 0.0,
+          "rougeL_f": 0.0,
+          "bleu1": 0,
+          "bleu2": 0,
+          "bleu3": 0,
+          "bleu4": 0,
+          "bert_precision": 0.8437628746032715,
+          "bert_recall": 0.787422776222229,
+          "bert_f1": 0.8146198987960815,
+          "meteor": 0.0,
+          "sbert_similarity": 0.2103949934244156
+        },
+        "model_returned": "deepseek-flash"
+      },
+      "absolute": {
+        "prediction": "18 July 2023",
+        "metrics": {
+          "exact_match": 0,
+          "f1": 0.4444444444444444,
+          "rouge1_f": 0.4444444444444444,
+          "rouge2_f": 0.28571428571428575,
+          "rougeL_f": 0.4444444444444444,
+          "bleu1": 0.24525296078096154,
+          "bleu2": 0.21239529438966132,
+          "bleu3": 0.11974448045963429,
+          "bleu4": 0.08839449202722564,
+          "bert_precision": 0.9599257111549377,
+          "bert_recall": 0.8994508981704712,
+          "bert_f1": 0.9287048578262329,
+          "meteor": 0.3289473684210526,
+          "sbert_similarity": 0.7882422804832458
+        },
+        "model_returned": "deepseek-flash"
+      }
+    },
+    {
+      "sample_id": 0,
+      "question": "When is Melanie's daughter's birthday?",
+      "reference": "13 August",
+      "category": 2,
+      "question_index": 45,
+      "context_sha256": "e2c58d06c576bdb4aacdb2849154fd21e0bebeda6e448fbbfcf32241e2eb85c4",
+      "historical": {
+        "prediction": "Last night",
+        "metrics": {
+          "exact_match": 0,
+          "f1": 0.0,
+          "rouge1_f": 0.0,
+          "rouge2_f": 0.0,
+          "rougeL_f": 0.0,
+          "bleu1": 0,
+          "bleu2": 0,
+          "bleu3": 0,
+          "bleu4": 0,
+          "bert_precision": 0.8975985646247864,
+          "bert_recall": 0.8975985646247864,
+          "bert_f1": 0.8975985646247864,
+          "meteor": 0.0,
+          "sbert_similarity": 0.3573996424674988
+        }
+      },
+      "original": {
+        "prediction": "Last night",
+        "metrics": {
+          "exact_match": 0,
+          "f1": 0.0,
+          "rouge1_f": 0.0,
+          "rouge2_f": 0.0,
+          "rougeL_f": 0.0,
+          "bleu1": 0,
+          "bleu2": 0,
+          "bleu3": 0,
+          "bleu4": 0,
+          "bert_precision": 0.8975985646247864,
+          "bert_recall": 0.8975985646247864,
+          "bert_f1": 0.8975985646247864,
+          "meteor": 0.0,
+          "sbert_similarity": 0.3573996424674988
+        },
+        "model_returned": "deepseek-flash"
+      },
+      "absolute": {
+        "prediction": "14 August 2023",
+        "metrics": {
+          "exact_match": 0,
+          "f1": 0.4,
+          "rouge1_f": 0.4,
+          "rouge2_f": 0.0,
+          "rougeL_f": 0.4,
+          "bleu1": 0.3333333333333333,
+          "bleu2": 0.12909944487358058,
+          "bleu3": 0.12111838948674812,
+          "bleu4": 0.11362193664674995,
+          "bert_precision": 0.8910852074623108,
+          "bert_recall": 0.9484274387359619,
+          "bert_f1": 0.9188625812530518,
+          "meteor": 0.2380952380952381,
+          "sbert_similarity": 0.7068345546722412
+        },
+        "model_returned": "deepseek-flash"
+      }
+    },
+    {
+      "sample_id": 0,
+      "question": "When did Caroline attend a pride parade in August?",
+      "reference": "The Friday before 14 August 2023",
+      "category": 2,
+      "question_index": 46,
+      "context_sha256": "90eda8ad6c980150b0c8c767c675a987d939abb2dad57d015a758979a32949c4",
+      "historical": {
+        "prediction": "14 August, 2023",
+        "metrics": {
+          "exact_match": 0,
+          "f1": 0.6666666666666666,
+          "rouge1_f": 0.6666666666666666,
+          "rouge2_f": 0.5714285714285715,
+          "rougeL_f": 0.6666666666666666,
+          "bleu1": 0.45489799478447507,
+          "bleu2": 0.30326532985631666,
+          "bleu3": 0.14283448174223617,
+          "bleu4": 0.11404605374835301,
+          "bert_precision": 0.9462280869483948,
+          "bert_recall": 0.911729097366333,
+          "bert_f1": 0.9286583065986633,
+          "meteor": 0.17543859649122806,
+          "sbert_similarity": 0.8192830681800842
+        }
+      },
+      "original": {
+        "prediction": "14 August, 2023",
+        "metrics": {
+          "exact_match": 0,
+          "f1": 0.6666666666666666,
+          "rouge1_f": 0.6666666666666666,
+          "rouge2_f": 0.5714285714285715,
+          "rougeL_f": 0.6666666666666666,
+          "bleu1": 0.45489799478447507,
+          "bleu2": 0.30326532985631666,
+          "bleu3": 0.14283448174223617,
+          "bleu4": 0.11404605374835301,
+          "bert_precision": 0.9462280869483948,
+          "bert_recall": 0.911729097366333,
+          "bert_f1": 0.9286583065986633,
+          "meteor": 0.17543859649122806,
+          "sbert_similarity": 0.8192830681800842
+        },
+        "model_returned": "deepseek-flash"
+      },
+      "absolute": {
+        "prediction": "14 August 2023",
+        "metrics": {
+          "exact_match": 0,
+          "f1": 0.6666666666666666,
+          "rouge1_f": 0.6666666666666666,
+          "rouge2_f": 0.5714285714285715,
+          "rougeL_f": 0.6666666666666666,
+          "bleu1": 0.36787944117144233,
+          "bleu2": 0.36787944117144233,
+          "bleu3": 0.36787944117144233,
+          "bleu4": 0.20687381245863395,
+          "bert_precision": 0.9504931569099426,
+          "bert_recall": 0.9053637981414795,
+          "bert_f1": 0.927379846572876,
+          "meteor": 0.5165692007797271,
+          "sbert_similarity": 0.827925443649292
+        },
+        "model_returned": "deepseek-flash"
+      }
+    },
+    {
+      "sample_id": 0,
+      "question": "When did Caroline and Melanie go to a pride fesetival together?",
+      "reference": 2022,
+      "category": 2,
+      "question_index": 50,
+      "context_sha256": "618a15b11b578f2a41c9828fc94506392a0689e7df4655f9096fe82a1d7cd62d",
+      "historical": {
+        "prediction": "Not mentioned in conversation",
+        "metrics": {
+          "exact_match": 0,
+          "f1": 0.0,
+          "rouge1_f": 0.0,
+          "rouge2_f": 0.0,
+          "rougeL_f": 0.0,
+          "bleu1": 0,
+          "bleu2": 0,
+          "bleu3": 0,
+          "bleu4": 0,
+          "bert_precision": 0.8443214893341064,
+          "bert_recall": 0.851760745048523,
+          "bert_f1": 0.8480247855186462,
+          "meteor": 0.0,
+          "sbert_similarity": 0.19769766926765442
+        }
+      },
+      "original": {
+        "prediction": "Not mentioned in the conversation",
+        "metrics": {
+          "exact_match": 0,
+          "f1": 0.0,
+          "rouge1_f": 0.0,
+          "rouge2_f": 0.0,
+          "rougeL_f": 0.0,
+          "bleu1": 0,
+          "bleu2": 0,
+          "bleu3": 0,
+          "bleu4": 0,
+          "bert_precision": 0.865142822265625,
+          "bert_recall": 0.849609375,
+          "bert_f1": 0.8573057651519775,
+          "meteor": 0.0,
+          "sbert_similarity": 0.20842009782791138
+        },
+        "model_returned": "deepseek-flash"
+      },
+      "absolute": {
+        "prediction": "15 July 2023",
+        "metrics": {
+          "exact_match": 0,
+          "f1": 0.0,
+          "rouge1_f": 0.0,
+          "rouge2_f": 0.0,
+          "rougeL_f": 0.0,
+          "bleu1": 0,
+          "bleu2": 0,
+          "bleu3": 0,
+          "bleu4": 0,
+          "bert_precision": 0.8828639388084412,
+          "bert_recall": 0.919548749923706,
+          "bert_f1": 0.9008329510688782,
+          "meteor": 0.0,
+          "sbert_similarity": 0.6823172569274902
+        },
+        "model_returned": "deepseek-flash"
+      }
+    },
+    {
+      "sample_id": 0,
+      "question": "When did Caroline apply to adoption agencies?",
+      "reference": "The week of 23 August 2023",
+      "category": 2,
+      "question_index": 54,
+      "context_sha256": "2219cb22886b55bcc98e5f8b29908b0ce9a394dcf69cb39d125aacc3f628d80f",
+      "historical": {
+        "prediction": "23 August, 2023",
+        "metrics": {
+          "exact_match": 0,
+          "f1": 0.6666666666666666,
+          "rouge1_f": 0.6666666666666666,
+          "rouge2_f": 0.5714285714285715,
+          "rougeL_f": 0.6666666666666666,
+          "bleu1": 0.45489799478447507,
+          "bleu2": 0.30326532985631666,
+          "bleu3": 0.14283448174223617,
+          "bleu4": 0.11404605374835301,
+          "bert_precision": 0.9367202520370483,
+          "bert_recall": 0.9104549288749695,
+          "bert_f1": 0.92340087890625,
+          "meteor": 0.17543859649122806,
+          "sbert_similarity": 0.8501458764076233
+        }
+      },
+      "original": {
+        "prediction": "23 August, 2023",
+        "metrics": {
+          "exact_match": 0,
+          "f1": 0.6666666666666666,
+          "rouge1_f": 0.6666666666666666,
+          "rouge2_f": 0.5714285714285715,
+          "rougeL_f": 0.6666666666666666,
+          "bleu1": 0.45489799478447507,
+          "bleu2": 0.30326532985631666,
+          "bleu3": 0.14283448174223617,
+          "bleu4": 0.11404605374835301,
+          "bert_precision": 0.9367202520370483,
+          "bert_recall": 0.9104549288749695,
+          "bert_f1": 0.92340087890625,
+          "meteor": 0.17543859649122806,
+          "sbert_similarity": 0.8501458764076233
+        },
+        "model_returned": "deepseek-flash"
+      },
+      "absolute": {
+        "prediction": "23 August 2023",
+        "metrics": {
+          "exact_match": 0,
+          "f1": 0.6666666666666666,
+          "rouge1_f": 0.6666666666666666,
+          "rouge2_f": 0.5714285714285715,
+          "rougeL_f": 0.6666666666666666,
+          "bleu1": 0.36787944117144233,
+          "bleu2": 0.36787944117144233,
+          "bleu3": 0.36787944117144233,
+          "bleu4": 0.20687381245863395,
+          "bert_precision": 0.9543330669403076,
+          "bert_recall": 0.9099293947219849,
+          "bert_f1": 0.931602418422699,
+          "meteor": 0.5165692007797271,
+          "sbert_similarity": 0.8445632457733154
+        },
+        "model_returned": "deepseek-flash"
+      }
+    },
+    {
+      "sample_id": 0,
+      "question": "When did Caroline draw a self-portrait?",
+      "reference": "The week before 23 August 2023",
+      "category": 2,
+      "question_index": 55,
+      "context_sha256": "3c6ff4c780ca9d3abe8962269b7f8e192d6aa4b0ba6274fc7a80eefa91f78459",
+      "historical": {
+        "prediction": "13 October, 2023",
+        "metrics": {
+          "exact_match": 0,
+          "f1": 0.2222222222222222,
+          "rouge1_f": 0.2222222222222222,
+          "rouge2_f": 0.0,
+          "rougeL_f": 0.2222222222222222,
+          "bleu1": 0.15163266492815836,
+          "bleu2": 0.05536842069051654,
+          "bleu3": 0.04649251600872798,
+          "bleu4": 0.04873039689743777,
+          "bert_precision": 0.9250123500823975,
+          "bert_recall": 0.9021307826042175,
+          "bert_f1": 0.9134283065795898,
+          "meteor": 0.08771929824561403,
+          "sbert_similarity": 0.7986634969711304
+        }
+      },
+      "original": {
+        "prediction": "13 October, 2023",
+        "metrics": {
+          "exact_match": 0,
+          "f1": 0.2222222222222222,
+          "rouge1_f": 0.2222222222222222,
+          "rouge2_f": 0.0,
+          "rougeL_f": 0.2222222222222222,
+          "bleu1": 0.15163266492815836,
+          "bleu2": 0.05536842069051654,
+          "bleu3": 0.04649251600872798,
+          "bleu4": 0.04873039689743777,
+          "bert_precision": 0.9250123500823975,
+          "bert_recall": 0.9021307826042175,
+          "bert_f1": 0.9134283065795898,
+          "meteor": 0.08771929824561403,
+          "sbert_similarity": 0.7986634969711304
+        },
+        "model_returned": "deepseek-flash"
+      },
+      "absolute": {
+        "prediction": "October 2023",
+        "metrics": {
+          "exact_match": 0,
+          "f1": 0.25,
+          "rouge1_f": 0.25,
+          "rouge2_f": 0.0,
+          "rougeL_f": 0.25,
+          "bleu1": 0.06766764161830635,
+          "bleu2": 0.030261889307125377,
+          "bleu3": 0.02355435073584915,
+          "bleu4": 0.020237345084409754,
+          "bert_precision": 0.9248879551887512,
+          "bert_recall": 0.8822132349014282,
+          "bert_f1": 0.9030466675758362,
+          "meteor": 0.08928571428571427,
+          "sbert_similarity": 0.7717099189758301
+        },
+        "model_returned": "deepseek-flash"
+      }
+    },
+    {
+      "sample_id": 0,
+      "question": "When did Caroline encounter people on a hike and have a negative experience?",
+      "reference": "The week before 25 August 2023",
+      "category": 2,
+      "question_index": 58,
+      "context_sha256": "51df1789c70ffcf5d66ca73ed17dc9f56dd12fdb5f544fcbe07783419d15b19a",
+      "historical": {
+        "prediction": "25 August, 2023",
+        "metrics": {
+          "exact_match": 0,
+          "f1": 0.6666666666666666,
+          "rouge1_f": 0.6666666666666666,
+          "rouge2_f": 0.5714285714285715,
+          "rougeL_f": 0.6666666666666666,
+          "bleu1": 0.45489799478447507,
+          "bleu2": 0.30326532985631666,
+          "bleu3": 0.14283448174223617,
+          "bleu4": 0.11404605374835301,
+          "bert_precision": 0.9441259503364563,
+          "bert_recall": 0.9142509698867798,
+          "bert_f1": 0.9289482831954956,
+          "meteor": 0.17543859649122806,
+          "sbert_similarity": 0.8337999582290649
+        }
+      },
+      "original": {
+        "prediction": "25 August, 2023",
+        "metrics": {
+          "exact_match": 0,
+          "f1": 0.6666666666666666,
+          "rouge1_f": 0.6666666666666666,
+          "rouge2_f": 0.5714285714285715,
+          "rougeL_f": 0.6666666666666666,
+          "bleu1": 0.45489799478447507,
+          "bleu2": 0.30326532985631666,
+          "bleu3": 0.14283448174223617,
+          "bleu4": 0.11404605374835301,
+          "bert_precision": 0.9441259503364563,
+          "bert_recall": 0.9142509698867798,
+          "bert_f1": 0.9289482831954956,
+          "meteor": 0.17543859649122806,
+          "sbert_similarity": 0.8337999582290649
+        },
+        "model_returned": "deepseek-flash"
+      },
+      "absolute": {
+        "prediction": "25 August 2023",
+        "metrics": {
+          "exact_match": 0,
+          "f1": 0.6666666666666666,
+          "rouge1_f": 0.6666666666666666,
+          "rouge2_f": 0.5714285714285715,
+          "rougeL_f": 0.6666666666666666,
+          "bleu1": 0.36787944117144233,
+          "bleu2": 0.36787944117144233,
+          "bleu3": 0.36787944117144233,
+          "bleu4": 0.20687381245863395,
+          "bert_precision": 0.9552891850471497,
+          "bert_recall": 0.9140464067459106,
+          "bert_f1": 0.9342128038406372,
+          "meteor": 0.5165692007797271,
+          "sbert_similarity": 0.8388095498085022
+        },
+        "model_returned": "deepseek-flash"
+      }
+    },
+    {
+      "sample_id": 0,
+      "question": "When did Melanie make a plate in pottery class?",
+      "reference": "24 August 2023",
+      "category": 2,
+      "question_index": 59,
+      "context_sha256": "1fcbe185d694025403278fa4c1e1896cfaeb36364a05325340b014ea60f8deef",
+      "historical": {
+        "prediction": "25 August, 2023",
+        "metrics": {
+          "exact_match": 0,
+          "f1": 0.6666666666666666,
+          "rouge1_f": 0.6666666666666666,
+          "rouge2_f": 0.5,
+          "rougeL_f": 0.6666666666666666,
+          "bleu1": 0.5,
+          "bleu2": 0.12909944487358058,
+          "bleu3": 0.09635409769034631,
+          "bleu4": 0.09554427922043669,
+          "bert_precision": 0.9639272093772888,
+          "bert_recall": 0.9837692975997925,
+          "bert_f1": 0.973747193813324,
+          "meteor": 0.16666666666666666,
+          "sbert_similarity": 0.9536036849021912
+        }
+      },
+      "original": {
+        "prediction": "25 August, 2023",
+        "metrics": {
+          "exact_match": 0,
+          "f1": 0.6666666666666666,
+          "rouge1_f": 0.6666666666666666,
+          "rouge2_f": 0.5,
+          "rougeL_f": 0.6666666666666666,
+          "bleu1": 0.5,
+          "bleu2": 0.12909944487358058,
+          "bleu3": 0.09635409769034631,
+          "bleu4": 0.09554427922043669,
+          "bert_precision": 0.9639272093772888,
+          "bert_recall": 0.9837692975997925,
+          "bert_f1": 0.973747193813324,
+          "meteor": 0.16666666666666666,
+          "sbert_similarity": 0.9536036849021912
+        },
+        "model_returned": "deepseek-flash"
+      },
+      "absolute": {
+        "prediction": "25 August 2023",
+        "metrics": {
+          "exact_match": 0,
+          "f1": 0.6666666666666666,
+          "rouge1_f": 0.6666666666666666,
+          "rouge2_f": 0.5,
+          "rougeL_f": 0.6666666666666666,
+          "bleu1": 0.6666666666666666,
+          "bleu2": 0.5773502691896257,
+          "bleu3": 0.3254992452916931,
+          "bleu4": 0.24028114141347542,
+          "bert_precision": 0.9945850968360901,
+          "bert_recall": 0.9945850968360901,
+          "bert_f1": 0.9945850968360901,
+          "meteor": 0.625,
+          "sbert_similarity": 0.9577716588973999
+        },
+        "model_returned": "deepseek-flash"
+      }
+    },
+    {
+      "sample_id": 0,
+      "question": "When did Melanie go to the park?",
+      "reference": "27 August 2023",
+      "category": 2,
+      "question_index": 63,
+      "context_sha256": "0fdc99ea8773d2422c876c70cf41ce19ef5935200334a1ca1812a84b8439bd03",
+      "historical": {
+        "prediction": "Yesterday",
+        "metrics": {
+          "exact_match": 0,
+          "f1": 0.0,
+          "rouge1_f": 0.0,
+          "rouge2_f": 0.0,
+          "rougeL_f": 0.0,
+          "bleu1": 0,
+          "bleu2": 0,
+          "bleu3": 0,
+          "bleu4": 0,
+          "bert_precision": 0.880789041519165,
+          "bert_recall": 0.8263965845108032,
+          "bert_f1": 0.8527263402938843,
+          "meteor": 0.0,
+          "sbert_similarity": 0.4052077531814575
+        }
+      },
+      "original": {
+        "prediction": "Yesterday",
+        "metrics": {
+          "exact_match": 0,
+          "f1": 0.0,
+          "rouge1_f": 0.0,
+          "rouge2_f": 0.0,
+          "rougeL_f": 0.0,
+          "bleu1": 0,
+          "bleu2": 0,
+          "bleu3": 0,
+          "bleu4": 0,
+          "bert_precision": 0.880789041519165,
+          "bert_recall": 0.8263965845108032,
+          "bert_f1": 0.8527263402938843,
+          "meteor": 0.0,
+          "sbert_similarity": 0.4052077531814575
+        },
+        "model_returned": "deepseek-flash"
+      },
+      "absolute": {
+        "prediction": "27 August 2023",
+        "metrics": {
+          "exact_match": 1,
+          "f1": 1.0,
+          "rouge1_f": 1.0,
+          "rouge2_f": 1.0,
+          "rougeL_f": 1.0,
+          "bleu1": 1.0,
+          "bleu2": 1.0,
+          "bleu3": 1.0,
+          "bleu4": 0.5623413251903491,
+          "bert_precision": 0.9999998211860657,
+          "bert_recall": 0.9999998211860657,
+          "bert_f1": 0.9999998211860657,
+          "meteor": 0.9814814814814815,
+          "sbert_similarity": 1.0
+        },
+        "model_returned": "deepseek-flash"
+      }
+    },
+    {
+      "sample_id": 0,
+      "question": "When is Caroline's youth center putting on a talent show?",
+      "reference": "September 2023",
+      "category": 2,
+      "question_index": 64,
+      "context_sha256": "54634b156964ca72f7de05e8bae43cd89c60909a78ef34222ad0efc62aea0c61",
+      "historical": {
+        "prediction": "Next month",
+        "metrics": {
+          "exact_match": 0,
+          "f1": 0.0,
+          "rouge1_f": 0.0,
+          "rouge2_f": 0.0,
+          "rougeL_f": 0.0,
+          "bleu1": 0,
+          "bleu2": 0,
+          "bleu3": 0,
+          "bleu4": 0,
+          "bert_precision": 0.878746509552002,
+          "bert_recall": 0.8663118481636047,
+          "bert_f1": 0.8724848628044128,
+          "meteor": 0.0,
+          "sbert_similarity": 0.536835789680481
+        }
+      },
+      "original": {
+        "prediction": "Next month",
+        "metrics": {
+          "exact_match": 0,
+          "f1": 0.0,
+          "rouge1_f": 0.0,
+          "rouge2_f": 0.0,
+          "rougeL_f": 0.0,
+          "bleu1": 0,
+          "bleu2": 0,
+          "bleu3": 0,
+          "bleu4": 0,
+          "bert_precision": 0.878746509552002,
+          "bert_recall": 0.8663118481636047,
+          "bert_f1": 0.8724848628044128,
+          "meteor": 0.0,
+          "sbert_similarity": 0.536835789680481
+        },
+        "model_returned": "deepseek-flash"
+      },
+      "absolute": {
+        "prediction": "September 2023",
+        "metrics": {
+          "exact_match": 1,
+          "f1": 1.0,
+          "rouge1_f": 1.0,
+          "rouge2_f": 1.0,
+          "rougeL_f": 1.0,
+          "bleu1": 1.0,
+          "bleu2": 1.0,
+          "bleu3": 0.46773514128719823,
+          "bleu4": 0.316227766016838,
+          "bert_precision": 1.0000001192092896,
+          "bert_recall": 1.0000001192092896,
+          "bert_f1": 1.0000001192092896,
+          "meteor": 0.9375,
+          "sbert_similarity": 1.0000001192092896
+        },
+        "model_returned": "deepseek-flash"
+      }
+    },
+    {
+      "sample_id": 0,
+      "question": "When did Caroline go biking with friends?",
+      "reference": "The weekend before 13 September 2023",
+      "category": 2,
+      "question_index": 68,
+      "context_sha256": "deffbbd1d9eb24e21e485271c809db0e1f332669dd94af565d1f89bea4482d01",
+      "historical": {
+        "prediction": "Last weekend",
+        "metrics": {
+          "exact_match": 0,
+          "f1": 0.25,
+          "rouge1_f": 0.25,
+          "rouge2_f": 0.0,
+          "rougeL_f": 0.25,
+          "bleu1": 0.06766764161830635,
+          "bleu2": 0.030261889307125377,
+          "bleu3": 0.02355435073584915,
+          "bleu4": 0.020237345084409754,
+          "bert_precision": 0.9249705076217651,
+          "bert_recall": 0.839556097984314,
+          "bert_f1": 0.8801960349082947,
+          "meteor": 0.08928571428571427,
+          "sbert_similarity": 0.5756860971450806
+        }
+      },
+      "original": {
+        "prediction": "Last weekend",
+        "metrics": {
+          "exact_match": 0,
+          "f1": 0.25,
+          "rouge1_f": 0.25,
+          "rouge2_f": 0.0,
+          "rougeL_f": 0.25,
+          "bleu1": 0.06766764161830635,
+          "bleu2": 0.030261889307125377,
+          "bleu3": 0.02355435073584915,
+          "bleu4": 0.020237345084409754,
+          "bert_precision": 0.9249705076217651,
+          "bert_recall": 0.839556097984314,
+          "bert_f1": 0.8801960349082947,
+          "meteor": 0.08928571428571427,
+          "sbert_similarity": 0.5756860971450806
+        },
+        "model_returned": "deepseek-flash"
+      },
+      "absolute": {
+        "prediction": "September 2023",
+        "metrics": {
+          "exact_match": 0,
+          "f1": 0.5,
+          "rouge1_f": 0.5,
+          "rouge2_f": 0.33333333333333337,
+          "rougeL_f": 0.5,
+          "bleu1": 0.1353352832366127,
+          "bleu2": 0.1353352832366127,
+          "bleu3": 0.06330106782582003,
+          "bleu4": 0.04279677428117006,
+          "bert_precision": 0.933053731918335,
+          "bert_recall": 0.8783641457557678,
+          "bert_f1": 0.9048833847045898,
+          "meteor": 0.33482142857142855,
+          "sbert_similarity": 0.7720099687576294
+        },
+        "model_returned": "deepseek-flash"
+      }
+    },
+    {
+      "sample_id": 0,
+      "question": "How long has Melanie been practicing art?",
+      "reference": "Since 2016",
+      "category": 2,
+      "question_index": 69,
+      "context_sha256": "b2dd5e973b6d07cc376f07911901dbdd063a03345d83f7a40455f0bbfb0a6d9f",
+      "historical": {
+        "prediction": "Seven years",
+        "metrics": {
+          "exact_match": 0,
+          "f1": 0.0,
+          "rouge1_f": 0.0,
+          "rouge2_f": 0.0,
+          "rougeL_f": 0.0,
+          "bleu1": 0,
+          "bleu2": 0,
+          "bleu3": 0,
+          "bleu4": 0,
+          "bert_precision": 0.8994472026824951,
+          "bert_recall": 0.8979289531707764,
+          "bert_f1": 0.8986874222755432,
+          "meteor": 0.0,
+          "sbert_similarity": 0.42544737458229065
+        }
+      },
+      "original": {
+        "prediction": "Seven years",
+        "metrics": {
+          "exact_match": 0,
+          "f1": 0.0,
+          "rouge1_f": 0.0,
+          "rouge2_f": 0.0,
+          "rougeL_f": 0.0,
+          "bleu1": 0,
+          "bleu2": 0,
+          "bleu3": 0,
+          "bleu4": 0,
+          "bert_precision": 0.8994472026824951,
+          "bert_recall": 0.8979289531707764,
+          "bert_f1": 0.8986874222755432,
+          "meteor": 0.0,
+          "sbert_similarity": 0.42544737458229065
+        },
+        "model_returned": "deepseek-flash"
+      },
+      "absolute": {
+        "prediction": "Seven years",
+        "metrics": {
+          "exact_match": 0,
+          "f1": 0.0,
+          "rouge1_f": 0.0,
+          "rouge2_f": 0.0,
+          "rougeL_f": 0.0,
+          "bleu1": 0,
+          "bleu2": 0,
+          "bleu3": 0,
+          "bleu4": 0,
+          "bert_precision": 0.8994472026824951,
+          "bert_recall": 0.8979289531707764,
+          "bert_f1": 0.8986874222755432,
+          "meteor": 0.0,
+          "sbert_similarity": 0.42544737458229065
+        },
+        "model_returned": "deepseek-flash"
+      }
+    },
+    {
+      "sample_id": 0,
+      "question": "When did Melanie's friend adopt a child?",
+      "reference": 2022,
+      "category": 2,
+      "question_index": 73,
+      "context_sha256": "3bf64fb3943b290e860b037bd4aa8f5a79d5b0bf90774d5300c161e14807a70f",
+      "historical": {
+        "prediction": "Last year",
+        "metrics": {
+          "exact_match": 0,
+          "f1": 0.0,
+          "rouge1_f": 0.0,
+          "rouge2_f": 0.0,
+          "rougeL_f": 0.0,
+          "bleu1": 0,
+          "bleu2": 0,
+          "bleu3": 0,
+          "bleu4": 0,
+          "bert_precision": 0.8828702569007874,
+          "bert_recall": 0.8763822317123413,
+          "bert_f1": 0.8796142935752869,
+          "meteor": 0.0,
+          "sbert_similarity": 0.36723724007606506
+        }
+      },
+      "original": {
+        "prediction": "Last year",
+        "metrics": {
+          "exact_match": 0,
+          "f1": 0.0,
+          "rouge1_f": 0.0,
+          "rouge2_f": 0.0,
+          "rougeL_f": 0.0,
+          "bleu1": 0,
+          "bleu2": 0,
+          "bleu3": 0,
+          "bleu4": 0,
+          "bert_precision": 0.8828702569007874,
+          "bert_recall": 0.8763822317123413,
+          "bert_f1": 0.8796142935752869,
+          "meteor": 0.0,
+          "sbert_similarity": 0.36723724007606506
+        },
+        "model_returned": "deepseek-flash"
+      },
+      "absolute": {
+        "prediction": "Last year",
+        "metrics": {
+          "exact_match": 0,
+          "f1": 0.0,
+          "rouge1_f": 0.0,
+          "rouge2_f": 0.0,
+          "rougeL_f": 0.0,
+          "bleu1": 0,
+          "bleu2": 0,
+          "bleu3": 0,
+          "bleu4": 0,
+          "bert_precision": 0.8828702569007874,
+          "bert_recall": 0.8763822317123413,
+          "bert_f1": 0.8796142935752869,
+          "meteor": 0.0,
+          "sbert_similarity": 0.36723724007606506
+        },
+        "model_returned": "deepseek-flash"
+      }
+    },
+    {
+      "sample_id": 0,
+      "question": "When did Melanie get hurt?",
+      "reference": "September 2023",
+      "category": 2,
+      "question_index": 74,
+      "context_sha256": "257cc09cbbb0b6a0765e08886ccd05aea43b48042a7c12f07fc53d1a229f1b13",
+      "historical": {
+        "prediction": "20 October, 2023",
+        "metrics": {
+          "exact_match": 0,
+          "f1": 0.4,
+          "rouge1_f": 0.4,
+          "rouge2_f": 0.0,
+          "rougeL_f": 0.4,
+          "bleu1": 0.25,
+          "bleu2": 0.09128709291752769,
+          "bleu3": 0.07665320007195604,
+          "bleu4": 0.08034284189446518,
+          "bert_precision": 0.9186230897903442,
+          "bert_recall": 0.9576331973075867,
+          "bert_f1": 0.9377226233482361,
+          "meteor": 0.2380952380952381,
+          "sbert_similarity": 0.7475430965423584
+        }
+      },
+      "original": {
+        "prediction": "20 October, 2023",
+        "metrics": {
+          "exact_match": 0,
+          "f1": 0.4,
+          "rouge1_f": 0.4,
+          "rouge2_f": 0.0,
+          "rougeL_f": 0.4,
+          "bleu1": 0.25,
+          "bleu2": 0.09128709291752769,
+          "bleu3": 0.07665320007195604,
+          "bleu4": 0.08034284189446518,
+          "bert_precision": 0.9186230897903442,
+          "bert_recall": 0.9576331973075867,
+          "bert_f1": 0.9377226233482361,
+          "meteor": 0.2380952380952381,
+          "sbert_similarity": 0.7475430965423584
+        },
+        "model_returned": "deepseek-flash"
+      },
+      "absolute": {
+        "prediction": "13 October 2023",
+        "metrics": {
+          "exact_match": 0,
+          "f1": 0.4,
+          "rouge1_f": 0.4,
+          "rouge2_f": 0.0,
+          "rougeL_f": 0.4,
+          "bleu1": 0.3333333333333333,
+          "bleu2": 0.12909944487358058,
+          "bleu3": 0.12111838948674812,
+          "bleu4": 0.11362193664674995,
+          "bert_precision": 0.9470162987709045,
+          "bert_recall": 0.9639467597007751,
+          "bert_f1": 0.9554064869880676,
+          "meteor": 0.2380952380952381,
+          "sbert_similarity": 0.8455493450164795
+        },
+        "model_returned": "deepseek-flash"
+      }
+    },
+    {
+      "sample_id": 0,
+      "question": "When did Melanie's family go on a roadtrip?",
+      "reference": "The weekend before 20 October 2023",
+      "category": 2,
+      "question_index": 75,
+      "context_sha256": "52e7e140b59a8176848efc74740e7bc39b469698fc23322fd7366e6c48ea092b",
+      "historical": {
+        "prediction": "This past weekend",
+        "metrics": {
+          "exact_match": 0,
+          "f1": 0.2222222222222222,
+          "rouge1_f": 0.2222222222222222,
+          "rouge2_f": 0.0,
+          "rougeL_f": 0.2222222222222222,
+          "bleu1": 0.12262648039048077,
+          "bleu2": 0.04749303163563625,
+          "bleu3": 0.044556965439969995,
+          "bleu4": 0.0417991745584234,
+          "bert_precision": 0.8947373628616333,
+          "bert_recall": 0.8371013402938843,
+          "bert_f1": 0.864960253238678,
+          "meteor": 0.08771929824561403,
+          "sbert_similarity": 0.475335031747818
+        }
+      },
+      "original": {
+        "prediction": "Past weekend",
+        "metrics": {
+          "exact_match": 0,
+          "f1": 0.25,
+          "rouge1_f": 0.25,
+          "rouge2_f": 0.0,
+          "rougeL_f": 0.25,
+          "bleu1": 0.06766764161830635,
+          "bleu2": 0.030261889307125377,
+          "bleu3": 0.02355435073584915,
+          "bleu4": 0.020237345084409754,
+          "bert_precision": 0.8846096992492676,
+          "bert_recall": 0.8269013166427612,
+          "bert_f1": 0.8547826409339905,
+          "meteor": 0.08928571428571427,
+          "sbert_similarity": 0.523348867893219
+        },
+        "model_returned": "deepseek-flash"
+      },
+      "absolute": {
+        "prediction": "20 October 2023",
+        "metrics": {
+          "exact_match": 0,
+          "f1": 0.6666666666666666,
+          "rouge1_f": 0.6666666666666666,
+          "rouge2_f": 0.5714285714285715,
+          "rougeL_f": 0.6666666666666666,
+          "bleu1": 0.36787944117144233,
+          "bleu2": 0.36787944117144233,
+          "bleu3": 0.36787944117144233,
+          "bleu4": 0.20687381245863395,
+          "bert_precision": 0.9536647796630859,
+          "bert_recall": 0.9050612449645996,
+          "bert_f1": 0.9287275671958923,
+          "meteor": 0.5165692007797271,
+          "sbert_similarity": 0.8427877426147461
+        },
+        "model_returned": "deepseek-flash"
+      }
+    },
+    {
+      "sample_id": 0,
+      "question": "When did Caroline pass the adoption interview?",
+      "reference": "The Friday before 22 October 2023",
+      "category": 2,
+      "question_index": 80,
+      "context_sha256": "513f25ad1784777e88eb27945fbafb83dd6261a8faed969e6ca6952edaf5cb35",
+      "historical": {
+        "prediction": "Last Friday",
+        "metrics": {
+          "exact_match": 0,
+          "f1": 0.25,
+          "rouge1_f": 0.25,
+          "rouge2_f": 0.0,
+          "rougeL_f": 0.25,
+          "bleu1": 0.06766764161830635,
+          "bleu2": 0.030261889307125377,
+          "bleu3": 0.02355435073584915,
+          "bleu4": 0.020237345084409754,
+          "bert_precision": 0.9142810106277466,
+          "bert_recall": 0.840681254863739,
+          "bert_f1": 0.875937819480896,
+          "meteor": 0.08928571428571427,
+          "sbert_similarity": 0.5740445852279663
+        }
+      },
+      "original": {
+        "prediction": "Last Friday",
+        "metrics": {
+          "exact_match": 0,
+          "f1": 0.25,
+          "rouge1_f": 0.25,
+          "rouge2_f": 0.0,
+          "rougeL_f": 0.25,
+          "bleu1": 0.06766764161830635,
+          "bleu2": 0.030261889307125377,
+          "bleu3": 0.02355435073584915,
+          "bleu4": 0.020237345084409754,
+          "bert_precision": 0.9142810106277466,
+          "bert_recall": 0.840681254863739,
+          "bert_f1": 0.875937819480896,
+          "meteor": 0.08928571428571427,
+          "sbert_similarity": 0.5740445852279663
+        },
+        "model_returned": "deepseek-flash"
+      },
+      "absolute": {
+        "prediction": "22 October 2023",
+        "metrics": {
+          "exact_match": 0,
+          "f1": 0.6666666666666666,
+          "rouge1_f": 0.6666666666666666,
+          "rouge2_f": 0.5714285714285715,
+          "rougeL_f": 0.6666666666666666,
+          "bleu1": 0.36787944117144233,
+          "bleu2": 0.36787944117144233,
+          "bleu3": 0.36787944117144233,
+          "bleu4": 0.20687381245863395,
+          "bert_precision": 0.9500136971473694,
+          "bert_recall": 0.9006655216217041,
+          "bert_f1": 0.9246817231178284,
+          "meteor": 0.5165692007797271,
+          "sbert_similarity": 0.8485543131828308
+        },
+        "model_returned": "deepseek-flash"
+      }
+    },
+    {
+      "sample_id": 0,
+      "question": "When did Melanie buy the figurines?",
+      "reference": "21 October 2023",
+      "category": 2,
+      "question_index": 81,
+      "context_sha256": "5438af9f1d7710958127ce4903a93261387c15fea7d31f60cad4a4195f78f22c",
+      "historical": {
+        "prediction": "Yesterday",
+        "metrics": {
+          "exact_match": 0,
+          "f1": 0.0,
+          "rouge1_f": 0.0,
+          "rouge2_f": 0.0,
+          "rougeL_f": 0.0,
+          "bleu1": 0,
+          "bleu2": 0,
+          "bleu3": 0,
+          "bleu4": 0,
+          "bert_precision": 0.8774044513702393,
+          "bert_recall": 0.8248740434646606,
+          "bert_f1": 0.8503287434577942,
+          "meteor": 0.0,
+          "sbert_similarity": 0.397643119096756
+        }
+      },
+      "original": {
+        "prediction": "Yesterday",
+        "metrics": {
+          "exact_match": 0,
+          "f1": 0.0,
+          "rouge1_f": 0.0,
+          "rouge2_f": 0.0,
+          "rougeL_f": 0.0,
+          "bleu1": 0,
+          "bleu2": 0,
+          "bleu3": 0,
+          "bleu4": 0,
+          "bert_precision": 0.8774044513702393,
+          "bert_recall": 0.8248740434646606,
+          "bert_f1": 0.8503287434577942,
+          "meteor": 0.0,
+          "sbert_similarity": 0.397643119096756
+        },
+        "model_returned": "deepseek-flash"
+      },
+      "absolute": {
+        "prediction": "22 October 2023",
+        "metrics": {
+          "exact_match": 0,
+          "f1": 0.6666666666666666,
+          "rouge1_f": 0.6666666666666666,
+          "rouge2_f": 0.5,
+          "rougeL_f": 0.6666666666666666,
+          "bleu1": 0.6666666666666666,
+          "bleu2": 0.5773502691896257,
+          "bleu3": 0.3254992452916931,
+          "bleu4": 0.24028114141347542,
+          "bert_precision": 0.9948974251747131,
+          "bert_recall": 0.9948974251747131,
+          "bert_f1": 0.9948974251747131,
+          "meteor": 0.625,
+          "sbert_similarity": 0.9786192178726196
+        },
+        "model_returned": "deepseek-flash"
+      }
+    }
+  ]
+}

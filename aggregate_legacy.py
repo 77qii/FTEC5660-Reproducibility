@@ -36,7 +36,8 @@ def main(paths):
             print(f"| {name} | — | {cell} | — |")
         else:
             print(f"| {name} | {rep:.2f} | {cell} | {statistics.mean(vals)-rep:+.2f} |")
-    print("\n注：论文的 Adversarial 列用错误答案当参考答案，分数**越低越好**（越低越不易受骗）。")
+    print("\n注：论文的 Adversarial 列用错误答案当参考答案，衡量的是与 trap 答案的 token 重叠；"
+          "在样本上 trap overlap 低与成功拒答相关，但不能替代 refusal accuracy。")
 
 
 if __name__ == "__main__":

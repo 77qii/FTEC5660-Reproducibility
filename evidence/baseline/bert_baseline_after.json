@@ -1,0 +1,74 @@
+[
+  {
+    "pred": "7 May 2023",
+    "ref": "7 May 2023",
+    "scores": {
+      "bert_precision": 1.0000001192092896,
+      "bert_recall": 1.0000001192092896,
+      "bert_f1": 1.0000001192092896
+    }
+  },
+  {
+    "pred": "8 May 2023",
+    "ref": "7 May 2023",
+    "scores": {
+      "bert_precision": 0.9919741153717041,
+      "bert_recall": 0.9919741153717041,
+      "bert_f1": 0.9919741153717041
+    }
+  },
+  {
+    "pred": "Not mentioned in the conversation",
+    "ref": "Not mentioned in the conversation",
+    "scores": {
+      "bert_precision": 0.9999997019767761,
+      "bert_recall": 0.9999997019767761,
+      "bert_f1": 0.9999997019767761
+    }
+  },
+  {
+    "pred": "playing guitar",
+    "ref": "playing the guitar with friends",
+    "scores": {
+      "bert_precision": 0.9637709856033325,
+      "bert_recall": 0.9264096021652222,
+      "bert_f1": 0.9447210431098938
+    }
+  },
+  {
+    "pred": "a support group",
+    "ref": "a support group for LGBTQ people",
+    "scores": {
+      "bert_precision": 0.9697220325469971,
+      "bert_recall": 0.9199675917625427,
+      "bert_f1": 0.9441897869110107
+    }
+  },
+  {
+    "pred": "",
+    "ref": "7 May 2023",
+    "scores": {
+      "bert_precision": 0.0,
+      "bert_recall": 0.0,
+      "bert_f1": 0.0
+    }
+  },
+  {
+    "pred": "Paris",
+    "ref": "London",
+    "scores": {
+      "bert_precision": 0.961470365524292,
+      "bert_recall": 0.961470365524292,
+      "bert_f1": 0.961470365524292
+    }
+  },
+  {
+    "pred": "she went to the beach last summer",
+    "ref": "last summer she visited the beach",
+    "scores": {
+      "bert_precision": 0.9500556588172913,
+      "bert_recall": 0.958717942237854,
+      "bert_f1": 0.9543671011924744
+    }
+  }
+]
