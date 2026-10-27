@@ -104,9 +104,12 @@ This is an engineering fix, not the study's measured modification.
 | `aggregate_trials.py` | mean ± std table against the paper's numbers |
 | `aggregate_legacy.py` | Aggregates the paper-reference rescores across trials |
 | `analyze_temporal.py` | Splits the Temporal category into date-format mismatches vs. genuine errors |
+| `analyze_c5.py` | Category-5 refusal rate: Wilson intervals, failure modes, F1-vs-behaviour cross-tab |
 | `capture_bert_baseline.py` | Before/after numerical equality check for the BERTScore fix |
 
-## The measured modification
+## The measured modifications
+
+### 1. Which string category 5 is scored against
 
 Commit `b31a1dd` (2026-10-21) changed how category-5 (adversarial) questions are scored. Its
 message states the old behaviour plainly:
@@ -120,6 +123,34 @@ So the paper's Adversarial column was scored against the *wrong* answer. On iden
 predictions, switching to the corrected reference moves that column by **+37.47** and the overall
 score by **+8.85**, with no change in model behaviour (mean over three trials; per-trial shifts
 are +34.66, +36.26 and +41.47).
+
+### 2. Reporting the metric the evaluator already computes
+
+`utils.score_prediction` writes `adversarial_correct` into every category-5 metric dict, and
+`aggregate_metrics` carries it into `aggregate_metrics["category_5"]` — but no table anywhere reads
+it. `analyze_c5.py` does: it re-derives the flag from the stored predictions, asserts the two
+implementations agree on every question, and reports the rate with a confidence interval instead of
+a token-overlap F1.
+
+```bash
+python analyze_c5.py result_conv26_new.json result_conv26_seed43.json result_conv26_seed44.json
+```
+
+Reads predictions already on disk — no API calls, no model downloads.
+
+```
+     trial    n   ok    rate      95% Wilson CI  F1|refusal   F1|trap
+   seed 42   47   31  65.96%       [51.7, 77.8]      67.64     32.98
+   seed 43   47   32  68.09%       [53.8, 79.6]      69.51     33.25
+   seed 44   47   33  70.21%       [56.0, 81.3]      71.05     29.58
+    pooled  141   96  68.09%       [60.0, 75.2]
+```
+
+Across three trials the model refuses the trap on **68.09% ± 2.13** of the 47 questions. The
+failures are 43 outright bait-takings, 2 unrelated answers, and **zero** cases of hedging (decline
+plus echo). F1 against the trap answer is **2.11** when the model refused and **95.56** when it did
+not: the two instruments disagree on **139 of 141 questions (98.6%)**, i.e. the F1 column ranks
+models by bait rate rather than by trap-handling.
 
 Full results, debug diary and conclusions are in [`REPORT.md`](REPORT.md).
 

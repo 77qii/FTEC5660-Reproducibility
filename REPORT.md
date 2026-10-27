@@ -293,17 +293,16 @@ establishes what a useless model scores.
 | **Adversarial** | **47** | **100.00** |
 | Overall | 199 | 26.38 |
 
-A model that never answers anything scores **100.00 F1 on the adversarial category**. The
-reason is that 444 of the 446 adversarial questions have no gold answer at all, so
-`Not mentioned in the conversation` *is* the correct response. This is a property of the
-metric, not of A-Mem — but it means the adversarial column cannot be read as "accuracy" and
-must not be averaged into an overall score without comment. See §5.
+A model that never answers anything scores **100.00 F1 on the adversarial category**, because 444
+of the 446 adversarial questions have no gold answer at all, so `Not mentioned in the conversation`
+*is* the correct response. That is a property of the metric, not of A-Mem — but it means the
+adversarial column cannot be read as "accuracy". See §5.
 
 ---
 
-## 5. Modification: fixing the category-5 reference
+## 5. Modifications: one fix, one missing metric
 
-### 5.1 What changed
+### 5.1 Modification 1: which string category 5 is scored against
 
 Nothing in the algorithm. The modification is to **which string the prediction is scored
 against** for category-5 questions.
@@ -387,21 +386,55 @@ depending on the seed. Any table that mixes the two conventions is not comparabl
 paper's 50.03 cannot be placed next to a corrected 69.40 as if the gap were a capability
 difference.
 
-For calibration: with the stub backend (§4.2), which answers `Not mentioned in the conversation`
-to *every* question, the same switch moves the adversarial score by **+97.25** and the overall
-by +22.97. The real model shows a smaller swing (+34.66 / +8.19 for seed 42, +36.26 / +8.56 for
-seed 43, +41.47 / +9.79 for seed 44) precisely because it does not always decline — the two
-references partly agree when a prediction is a real attempt at the answer. The stub case is the
-ceiling of the artefact, the real case is its realistic size.
+### 5.3 Modification 2: reporting the metric the evaluator already computes
 
-### 5.3 Which metric should be used
+Neither reference is fully satisfactory. Under the paper's reference the metric rewards agreeing
+with a wrong answer; under the corrected one it rewards refusing, and a constant "not mentioned"
+scores 100 (§4.2). Both are F1 — token overlap with a string — but category 5 is a binary decision,
+so the right instrument is binary, and the repository already has it: `utils.score_prediction`
+writes `adversarial_correct` into every category-5 metric dict (1 if the prediction declines *and*
+does not echo the trap) and `aggregate_metrics` carries it into `aggregate_metrics["category_5"]`.
+**No table reads it** — not the paper's Table 1, not the README, not the results table I wrote in §4.
 
-Neither reference is fully satisfactory. Under the paper's reference, the metric rewards
-agreeing with a wrong answer. Under the corrected reference, it rewards refusing to answer — a
-constant "not mentioned" scores 100 (§4.2). The repository already computes a third quantity,
-`adversarial_correct`, which checks whether the prediction declined the trap *and* did not
-echo the adversarial string. I recommend reporting that instead of F1 for category 5, and
-reporting category-5 results separately rather than folding them into an overall average.
+The predicate is upstream's, from the same commit `b31a1dd` that fixed the reference (`git blame`
+puts lines 190–207 on the author). What I added is the reporting path, `analyze_c5.py`: it
+re-derives the flag from the stored predictions independently of `utils.py` and **asserts the two
+agree on all 141 questions**, reports the rate with a Wilson interval (at n=47 a normal
+approximation is too narrow), decomposes the failures into exclusive behavioural modes, and
+cross-tabulates the flag against F1 under both references. It reads predictions already on disk —
+**zero API cost, no model downloads**, ~0.2 s.
+
+| Trial | Correct / 47 | Rate | 95% Wilson CI |
+|---|---|---|---|
+| seed 42 | 31 | 65.96 | [51.7, 77.8] |
+| seed 43 | 32 | 68.09 | [53.8, 79.6] |
+| seed 44 | 33 | 70.21 | [56.0, 81.3] |
+| **pooled** | **96 / 141** | **68.09** | **[60.0, 75.2]** |
+
+Across trials: **68.09 ± 2.13**. The failures are unambiguous: 43 questions (30.5%) returned the
+trap answer outright, 2 (1.4%) answered something that was neither a refusal nor the trap, and
+**zero both declined and echoed the trap** — the clause meant to catch hedging never fires here.
+The model either refuses cleanly or takes the bait.
+
+The informative result is the cross-tabulation. Of the 96 questions the model handled, **none** has
+F1-vs-trap ≥ 0.5; of the 45 it did not, **43** do. Mean F1 against the trap is **2.11** when the
+model refused and **95.56** when it did not. The two instruments are not noisy proxies for one
+another — on this data they are near-exact inverses, disagreeing on **139 of 141 questions
+(98.6%)**.
+
+That reframes the column rather than merely qualifying it: the paper's adversarial F1 does not
+weakly measure trap-handling, it *ranks models by how often they take the bait*, so a score near 50
+means the set splits roughly evenly. 50.03 and 31.93 therefore differ mainly in bait rate, not in
+capability, and neither can be read as accuracy. Behaviourally, A-Mem handles **68.09%** of traps
+here (lower bound 60.0); the paper released no predictions, so there is no binary figure to compare
+against, and I claim only that the F1 column cannot support the comparison.
+
+### 5.4 Recommendation
+
+Report category 5 as a **binary refusal rate with an interval**, never as F1 and never folded into
+an overall average — a five-category mean implicitly weights a number that is anti-correlated with
+success. Keep F1 for categories 1–4, where token overlap is a defensible proxy for a short factual
+answer.
 
 ---
 
@@ -424,21 +457,16 @@ pip install --no-build-isolation ./vendor/rouge_score-0.1.2
 ### 6.2 `nltk.download()` blocked
 
 `nltk.download('punkt')` and `('wordnet')` failed with an SSRF/network restriction in my
-environment. METEOR and BLEU tokenisation both depend on these.
-
-**Resolution:** fetched the four packages (`punkt`, `punkt_tab`, `wordnet`, `omw-1.4`) as zips
-from the `nltk_data` GitHub mirror and unpacked them into `~/nltk_data/`.
+environment; METEOR and BLEU tokenisation both depend on them. **Resolution:** fetched the four
+packages (`punkt`, `punkt_tab`, `wordnet`, `omw-1.4`) as zips from the `nltk_data` GitHub mirror
+and unpacked them into `~/nltk_data/`.
 
 ### 6.3 NLTK still refuses to load the data: "Refused, writable by other accounts"
 
-After unpacking, NLTK rejected the corpora:
-
-> Refused, writable by other accounts (a file planted or rewritten there would be loaded as
-> trusted data)
-
-This is a security check, and the message appears in the middle of a long warning block, so it
-is easy to miss. **Resolution:** `chmod -R go-w ~/nltk_data`. After this, METEOR returned
-non-zero scores.
+NLTK then rejected the corpora outright — *"Refused, writable by other accounts (a file planted or
+rewritten there would be loaded as trusted data)"*. This is a security check, and the message
+appears in the middle of a long warning block, so it is easy to miss. **Resolution:**
+`chmod -R go-w ~/nltk_data`; METEOR then returned non-zero scores.
 
 ### 6.4 The evaluation harness, not the LLM, is the bottleneck
 
@@ -508,8 +536,7 @@ that instead.
 (1,723 + 398 + 398), and the aggregate picture matches the paper closely: Multi-Hop 27.04 vs
 27.02, Single-Hop 43.08 vs 44.65, Open-Domain 13.88 vs 12.14, overall behaviour within a few
 points — despite a completely different backbone model. A-Mem's central claim, that structured
-agentic memory beats naive retrieval on multi-hop questions, is at minimum **not contradicted**:
-our multi-hop score sits on top of the paper's rather than below it.
+agentic memory beats naive retrieval on multi-hop questions, is at minimum **not contradicted**.
 
 **But the variance matters as much as the means.** Multi-Hop swung 8.79 points across three runs
 on the same 32 questions (31.37 / 22.58 / 27.17). So "we matched the paper to 0.02 points" is
@@ -528,7 +555,10 @@ evidence against the method:
 2. **Adversarial** is not comparable as reported. The paper scored it against the wrong answer
    (documented by the authors in commit `b31a1dd`), so its 50.03 measures trap-susceptibility,
    not accuracy. On identical predictions, switching to the correct reference moves the column by
-   **+37.47** and the overall score by **+8.85** with no change in model behaviour.
+   **+37.47** and the overall score by **+8.85** with no change in model behaviour. Measured
+   behaviourally instead of by string overlap, the model refuses the trap on **68.09%** of the 47
+   questions (95% CI [60.0, 75.2]), and F1-vs-trap is the near-exact inverse of that verdict on
+   98.6% of questions — so the column's ranking carries no information about trap-handling.
 
 **What is expensive.** Not the tokens — $1.13 for the first conversation, $0.73 per additional
 trial, $2.59 in total and these are upper bounds because the meter ignores cache discounts
@@ -545,8 +575,10 @@ alone was 18 minutes.
    hash in every results file.
 2. **Record the resolved model name, not the requested one.** `deepseek-chat` returned
    `deepseek-flash`; the alias may point elsewhere tomorrow.
-3. **Do not average category 5 into an overall score.** Report `adversarial_correct`, and report
-   the category separately. Both available references reward a degenerate behaviour (§4.2, §5.3).
+3. **Do not average category 5 into an overall score.** Report the binary refusal rate instead
+   (68.09% [60.0, 75.2] here), and report the category separately. Both available F1 references
+   reward a degenerate behaviour (§4.2, §5.3), and on this data F1-vs-trap is nearly the inverse of
+   the behaviour it is supposed to measure.
 4. **Check answer *form* before believing a capability gap.** The Temporal column would look like
    a 25-point failure of the method; it is mostly a 9-point formatting mismatch.
 5. **Cache the BERTScore model** before running anything at scale (§6.4).
@@ -558,8 +590,7 @@ alone was 18 minutes.
 | File | Purpose |
 |---|---|
 | `run_eval.sh` | Entry point; reads `.env`, maps DeepSeek onto the OpenAI endpoint |
-| `run_metered.py` | Same, plus token/cost accounting |
-| `meter.py` | Patches `Completions.create` to record usage; repo untouched |
+| `run_metered.py`, `meter.py` | The same, plus token/cost accounting (`meter.py` patches `Completions.create`; the repo is untouched) |
 | `dry_run.py` | Stub backend for end-to-end validation at zero cost |
 | `smoke_test.py` | 5 checks (imports, dataset, embeddings, metrics, prompt templates) |
 | `rescore_c5.py` | Re-scores stored predictions under both category-5 references (`--json` emits a machine-readable summary) |
@@ -567,12 +598,12 @@ alone was 18 minutes.
 | `aggregate_trials.py` | Emits the report-ready mean ± std table against the paper's numbers |
 | `aggregate_legacy.py` | Aggregates the paper-reference rescores across trials |
 | `analyze_temporal.py` | Decomposes the Temporal category into format-mismatch vs. genuine-error subsets (§4.1) |
-| `capture_bert_baseline.py` | Before/after numerical equality check for the BERTScore fix |
-| `bert_baseline_{before,after}.json` | The 24 compared values |
+| `analyze_c5.py` | Surfaces the category-5 refusal rate: re-derives the flag and asserts it matches the stored value, adds Wilson intervals, failure modes and the F1-vs-behaviour cross-tab (§5.3) |
+| `capture_bert_baseline.py` | Before/after numerical equality check for the BERTScore fix (writes `bert_baseline_{before,after}.json`) |
 
 ## Appendix B: Repository diff
 
-Only one file in the upstream repository was modified:
+Only one upstream file was modified:
 
 ```
 utils.py | 25 ++++++++++++++++++++++++-
@@ -580,4 +611,5 @@ utils.py | 25 ++++++++++++++++++++++++-
 ```
 
 The change is confined to `calculate_bert_scores` and its new lazy accessor; the algorithm,
-prompts, retrieval and evaluation logic are untouched.
+prompts, retrieval and evaluation logic are untouched. Everything else in the diff is new files:
+the analysis scripts, the runner wrappers, the report and the README.
