@@ -518,10 +518,9 @@ baseline runs were not**. No additional research scope is claimed.
 
 ## Appendix A: Reproduction artifacts and repository status
 
-**Student GitHub URL: pending provision; not yet published.** The local repository is ready for
-review, but the original author's URL is not a student submission link. No new changes have been
-committed or pushed in this revision; `evidence/provenance.json` records the actual local HEAD
-and uncommitted state. Commits plus the student's URL are still required before submission.
+**Repository:** https://github.com/77qii/FTEC5660-Reproducibility
+**Final commit:** `662402da83edaf57f8b9a56abd1cc4af2cf85d73`
+All code, evidence and result files are in that commit. The immediately following commit changes only this line so the SHA can be recorded; `evidence/provenance.json` holds the upstream commit and the tree state at evidence-preparation time.
 
 **One-command offline table reproduction** (Python 3, standard library only, no key/network):
 
