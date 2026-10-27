@@ -293,10 +293,10 @@ establishes what a useless model scores.
 | **Adversarial** | **47** | **100.00** |
 | Overall | 199 | 26.38 |
 
-A model that never answers anything scores **100.00 F1 on the adversarial category**, because 444
-of the 446 adversarial questions have no gold answer at all, so `Not mentioned in the conversation`
-*is* the correct response. That is a property of the metric, not of A-Mem — but it means the
-adversarial column cannot be read as "accuracy". See §5.
+A model that never answers anything scores **100.00 F1 on the adversarial category**: 444 of the
+446 adversarial questions have no gold answer, so `Not mentioned in the conversation` *is* the
+correct response. That is a property of the metric, not of A-Mem — but the column still cannot be
+read as "accuracy" (§5).
 
 ---
 
@@ -375,26 +375,23 @@ Per trial, the adversarial shift was **+34.66** (seed 42), **+36.26** (seed 43) 
 (seed 44); the overall shift was +8.19, +8.56 and +9.79. The effect is stable across trials,
 which is expected — it is arithmetic on the same predictions, not a sampling effect.
 
-Two things follow.
-
 **Isolation holds.** Four of five categories are bit-identical, as they must be — the flag only
 touches category 5. This is a direct check that the change is confined to the intended mechanism.
 
 **The effect is large and purely nominal.** The model's answers did not change by a single
 character, yet the adversarial score moves 34.66–41.47 points and the overall score 8.19–9.79
-depending on the seed. Any table that mixes the two conventions is not comparable, and the
-paper's 50.03 cannot be placed next to a corrected 69.40 as if the gap were a capability
-difference.
+depending on the seed. A table mixing the two conventions is not comparable: the paper's 50.03
+cannot sit next to a corrected 69.40 as if the gap were a capability difference.
 
 ### 5.3 Modification 2: reporting the metric the evaluator already computes
 
 Neither reference is fully satisfactory. Under the paper's reference the metric rewards agreeing
 with a wrong answer; under the corrected one it rewards refusing, and a constant "not mentioned"
 scores 100 (§4.2). Both are F1 — token overlap with a string — but category 5 is a binary decision,
-so the right instrument is binary, and the repository already has it: `utils.score_prediction`
-writes `adversarial_correct` into every category-5 metric dict (1 if the prediction declines *and*
-does not echo the trap) and `aggregate_metrics` carries it into `aggregate_metrics["category_5"]`.
-**No table reads it** — not the paper's Table 1, not the README, not the results table I wrote in §4.
+so the right instrument is binary, and the repository already has it: `utils.score_prediction` writes
+`adversarial_correct` into every category-5 metric dict (1 if the prediction declines *and* does not
+echo the trap), and `aggregate_metrics` carries it into the aggregate block. **No table reads it** —
+not the paper's Table 1, not the README, not the table I wrote in §4.
 
 The predicate is upstream's, from the same commit `b31a1dd` that fixed the reference (`git blame`
 puts lines 190–207 on the author). What I added is the reporting path, `analyze_c5.py`: it
@@ -434,7 +431,8 @@ against, and I claim only that the F1 column cannot support the comparison.
 Report category 5 as a **binary refusal rate with an interval**, never as F1 and never folded into
 an overall average — a five-category mean implicitly weights a number that is anti-correlated with
 success. Keep F1 for categories 1–4, where token overlap is a defensible proxy for a short factual
-answer.
+answer. The rate is not degeneracy-proof either: the stub backend scores **100** on it as well
+(§4.2), which is why it has to be read next to the other four categories, never on its own.
 
 ---
 
@@ -524,9 +522,9 @@ that instead.
 ### 6.6 Smaller items
 
 - `test_advanced_robust.py` resolves `--dataset` and `--output` relative to the script's own
-  directory, not the working directory. Worth knowing when scripting around it.
-- The module set is flat (no package), so any external script must `sys.path.insert` the repo
-  directory before importing `utils` / `load_dataset`.
+  directory, not the working directory.
+- The module set is flat, so any external script must `sys.path.insert` the repo directory before
+  importing `utils` / `load_dataset`.
 
 ---
 
@@ -548,9 +546,8 @@ fourth and fifth trial would tighten them for another $0.73 each.
 evidence against the method:
 
 1. **Temporal (−24.29, stable at ±2.44)** is mostly a metric artefact. 35–38% of the answers are
-   semantically correct dates expressed relatively (`Yesterday` for `7 May 2023`) and score near
-   zero because F1 is token-overlap. Roughly 9 of the 24 points are this; the remaining ~15 look
-   like a genuine capability gap between the two models.
+   correct dates expressed relatively (`Yesterday` for `7 May 2023`) and score near zero because F1
+   is token-overlap. Roughly 9 of the 24 points are this; the remaining ~15 look like a real gap.
 
 2. **Adversarial** is not comparable as reported. The paper scored it against the wrong answer
    (documented by the authors in commit `b31a1dd`), so its 50.03 measures trap-susceptibility,
@@ -570,9 +567,8 @@ alone was 18 minutes.
 
 **Recommendations to future users.**
 
-1. **Pin the commit.** This repository changed its evaluation semantics on 2026-10-21. Any number
-   produced before that date is not comparable to any number produced after it. Record the commit
-   hash in every results file.
+1. **Pin the commit.** This repository changed its evaluation semantics on 2026-10-21. Numbers from
+   before and after that date are not comparable; record the hash in every results file.
 2. **Record the resolved model name, not the requested one.** `deepseek-chat` returned
    `deepseek-flash`; the alias may point elsewhere tomorrow.
 3. **Do not average category 5 into an overall score.** Report the binary refusal rate instead

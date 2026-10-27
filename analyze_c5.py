@@ -76,6 +76,13 @@ def refusal_verdict(prediction, trap):
     return declines, gives_trap, int(declines and not gives_trap)
 
 
+def mean_or_none(values):
+    """Mean of a possibly empty selection. A run with no failures has no mean F1 for failures --
+    returning None keeps that visible instead of raising or inventing a zero."""
+    values = list(values)
+    return statistics.mean(values) if values else None
+
+
 def wilson(k, n, z=Z95):
     """95% Wilson score interval -- the right interval for n=47, where normal-approx is too narrow."""
     if n == 0:
@@ -233,11 +240,21 @@ def disagreement(rows):
         "f1_trap_low_and_wrong": len(low_wrong),
         "n_disagree": len(high_wrong) + len(low_right),
         "pct_disagree": 100.0 * (len(high_wrong) + len(low_right)) / total,
-        "f1_trap_correct": 100.0 * statistics.mean(r["f1_trap"] for r in rows if r["correct"]),
-        "f1_trap_incorrect": 100.0 * statistics.mean(r["f1_trap"] for r in rows if not r["correct"]),
-        "f1_refusal_correct": 100.0 * statistics.mean(r["f1_refusal"] for r in rows if r["correct"]),
-        "f1_refusal_incorrect": 100.0 * statistics.mean(r["f1_refusal"] for r in rows if not r["correct"]),
+        "f1_trap_correct": scaled(mean_or_none(r["f1_trap"] for r in rows if r["correct"])),
+        "f1_trap_incorrect": scaled(mean_or_none(r["f1_trap"] for r in rows if not r["correct"])),
+        "f1_refusal_correct": scaled(mean_or_none(r["f1_refusal"] for r in rows if r["correct"])),
+        "f1_refusal_incorrect": scaled(mean_or_none(r["f1_refusal"] for r in rows if not r["correct"])),
     }
+
+
+def scaled(value):
+    """0-1 to percent, preserving None."""
+    return None if value is None else 100.0 * value
+
+
+def fmt(value, digits=2):
+    """Format a possibly-None percentage."""
+    return "--" if value is None else f"{value:.{digits}f}"
 
 
 def render_markdown(s):
@@ -282,8 +299,8 @@ def render_markdown(s):
     out.append(f"| **did not** | {d['f1_trap_high_but_wrong']} | {d['f1_trap_low_and_wrong']} |")
     out.append("")
     out.append(
-        f"Mean F1 against the trap answer: {d['f1_trap_correct']:.2f} when the model refused, "
-        f"{d['f1_trap_incorrect']:.2f} when it did not. "
+        f"Mean F1 against the trap answer: {fmt(d['f1_trap_correct'])} when the model refused, "
+        f"{fmt(d['f1_trap_incorrect'])} when it did not. "
         f"{d['n_disagree']} of {d['n']} questions ({d['pct_disagree']:.1f}%) fall on the wrong side "
         f"of the 0.5 line under one instrument or the other."
     )
@@ -318,8 +335,8 @@ def render_console(s):
     d = s["disagreement"]
     print("\nF1 vs behaviour")
     print("-" * 78)
-    print(f"  mean F1 vs trap  | refused {d['f1_trap_correct']:>6.2f}   did not {d['f1_trap_incorrect']:>6.2f}")
-    print(f"  mean F1 vs refusal | refused {d['f1_refusal_correct']:>6.2f}   did not {d['f1_refusal_incorrect']:>6.2f}")
+    print(f"  mean F1 vs trap    | refused {fmt(d['f1_trap_correct']):>6}   did not {fmt(d['f1_trap_incorrect']):>6}")
+    print(f"  mean F1 vs refusal | refused {fmt(d['f1_refusal_correct']):>6}   did not {fmt(d['f1_refusal_incorrect']):>6}")
     print(f"  F1-vs-trap >= 0.5 but wrong : {d['f1_trap_high_but_wrong']:>4}")
     print(f"  F1-vs-trap <  0.5 but right : {d['f1_trap_low_but_right']:>4}")
     print(f"  disagreement                : {d['n_disagree']}/{d['n']} = {d['pct_disagree']:.1f}%")
