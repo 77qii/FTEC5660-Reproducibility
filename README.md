@@ -103,6 +103,7 @@ This is an engineering fix, not the study's measured modification.
 | `rescore_c5.py` | Re-scores stored predictions under both category-5 references |
 | `aggregate_trials.py` | mean ± std table against the paper's numbers |
 | `aggregate_legacy.py` | Aggregates the paper-reference rescores across trials |
+| `analyze_temporal.py` | Splits the Temporal category into date-format mismatches vs. genuine errors |
 | `capture_bert_baseline.py` | Before/after numerical equality check for the BERTScore fix |
 
 ## The measured modification
@@ -116,8 +117,9 @@ message states the old behaviour plainly:
 > numbers used**.
 
 So the paper's Adversarial column was scored against the *wrong* answer. On identical
-predictions, switching to the corrected reference moves that column by **+35.47** and the overall
-score by **+8.37**, with no change in model behaviour.
+predictions, switching to the corrected reference moves that column by **+37.47** and the overall
+score by **+8.85**, with no change in model behaviour (mean over three trials; per-trial shifts
+are +34.66, +36.26 and +41.47).
 
 Full results, debug diary and conclusions are in [`REPORT.md`](REPORT.md).
 
